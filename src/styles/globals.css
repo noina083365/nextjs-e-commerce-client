@@ -162,3 +162,27 @@ svg.admin-menu-sidebar-icon {
 .hidden {
 	display: none;
 }
+
+@media only screen and (max-width: 1200px) {}
+
+/* md */
+@media (max-width: 900px) {
+	.category-sidebar {
+		width: 25%;
+	}
+
+	.product-list-shop {
+		width: 75%;
+	}
+}
+
+/* sm */
+@media (max-width: 600px) {
+	.category-sidebar {
+		display: none;
+	}
+
+	.product-list-shop {
+		width: 100%;
+	}
+}

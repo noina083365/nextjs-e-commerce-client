@@ -7,6 +7,7 @@ import { editProduct, fetchProduct } from '@/redux/reducers/productSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { ProductState } from '@/types/interfaces';
 import { resetProductCreateForm } from '@/types/product';
+import Link from 'next/link';
 
 const EditProduct = ({ id }: { id: string }) => {
 	const dispatch = useDispatch();
@@ -52,11 +53,7 @@ const EditProduct = ({ id }: { id: string }) => {
 		<div className="max-w-4xl mx-auto px-4 py-8">
 			<div className="flex justify-between items-center mb-6">
 				<h4 className="font-sm font-semibold mb-6">Edit Product</h4>
-				<button
-					onClick={() => router.push('/admin/product')}
-					className="bg-blue-500 text-xs text-white px-3 py-1 rounded">
-					Back to list
-				</button>
+				<Link href="/admin/product">Back to list</Link>
 			</div>
 			<form onSubmit={handleSubmit} className="space-y-6">
 				<div>
@@ -70,7 +67,7 @@ const EditProduct = ({ id }: { id: string }) => {
 						required
 						value={productData.title}
 						onChange={handleChange}
-						className="mt-1 block w-full p-2 rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+						className="mt-1 block w-full rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
 					/>
 				</div>
 				<div>
@@ -84,7 +81,7 @@ const EditProduct = ({ id }: { id: string }) => {
 						required
 						value={productData.details}
 						onChange={handleChange}
-						className="mt-1 block w-full p-2 rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+						className="mt-1 block w-full rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
 					/>
 				</div>
 				<div>

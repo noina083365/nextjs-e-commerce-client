@@ -1,6 +1,7 @@
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { ReduxProvider } from '@/components/provider';
+import { SidebarProvider } from '@/contexts/SidebarContext';
 import '@/styles/globals.css';
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -14,7 +15,9 @@ export default function App({ Component, pageProps }: AppProps) {
 			</Head>
 
 			<ReduxProvider>
-				<Component {...pageProps} />
+				<SidebarProvider>
+					<Component {...pageProps} />
+				</SidebarProvider>
 			</ReduxProvider>
 		</>
 	);

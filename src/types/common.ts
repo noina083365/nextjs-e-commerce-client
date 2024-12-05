@@ -1,16 +1,16 @@
 type Id = 'id';
-export type IdParams = Record<Id, string>
+export type IdParams = Record<Id, string>;
 export type Slug = 'slug';
-export type SlugParams = Record<Slug, string>
+export type SlugParams = Record<Slug, string>;
 
 export type ParamProps = {
-    params: Promise<IdParams>;
+	params: Promise<IdParams>;
 };
 
 export type SlugProps = {
-    params: Promise<SlugParams>;
+	params: Promise<SlugParams>;
 };
 
 export type SlugSearchProps = SlugProps & {
-    searchParams: { [key: string]: string | string[] | undefined };
+	searchParams: { [key: string]: string | string[] | undefined };
 };

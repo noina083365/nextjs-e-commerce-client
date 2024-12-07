@@ -172,6 +172,10 @@ svg.admin-menu-sidebar-icon {
 	position: relative;
 }
 
+.cart-area {
+	padding: 120px 25px 25px 25px;
+}
+
 @media only screen and (max-width: 1200px) {}
 
 /* md */

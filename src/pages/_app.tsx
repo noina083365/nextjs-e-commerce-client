@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { ReduxProvider } from '@/components/provider';
 import { SidebarProvider } from '@/contexts/SidebarContext';
 import '@/styles/globals.css';
+import { CartProvider } from '@/contexts/CartContext';
 
 export default function App({ Component, pageProps }: AppProps) {
 	return (
@@ -16,7 +17,9 @@ export default function App({ Component, pageProps }: AppProps) {
 
 			<ReduxProvider>
 				<SidebarProvider>
-					<Component {...pageProps} />
+					<CartProvider>
+						<Component {...pageProps} />
+					</CartProvider>
 				</SidebarProvider>
 			</ReduxProvider>
 		</>

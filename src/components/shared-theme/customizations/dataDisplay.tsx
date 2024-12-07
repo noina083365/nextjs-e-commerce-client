@@ -20,7 +20,7 @@ export const dataDisplayCustomizations: Components<Theme> = {
   },
   MuiListItem: {
     styleOverrides: {
-      root: ({ theme }) => ({
+      root: ({ theme }: any) => ({
         [`& .${svgIconClasses.root}`]: {
           width: '1rem',
           height: '1rem',

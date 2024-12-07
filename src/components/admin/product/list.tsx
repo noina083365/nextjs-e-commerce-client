@@ -55,7 +55,7 @@ const ProductList = () => {
 						{products.map((product: Product) => (
 							<tr key={product.id}>
 								<td className="px-6 py-4 whitespace-wrap">
-									<div className="font-medium text-gray-900">{product.title}</div>
+									<div className="font-medium text-gray-900">{product.name}</div>
 								</td>
 								<td className="px-6 py-4 whitespace-wrap">
 									<Link className="text-indigo-600 mr-2" href={`/admin/product/edit/${product.id}`}>

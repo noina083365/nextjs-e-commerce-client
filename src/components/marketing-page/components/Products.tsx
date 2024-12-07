@@ -1,4 +1,6 @@
-import * as React from 'react';
+'use client';
+
+import { useEffect } from "react";
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
@@ -8,6 +10,11 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid2';
 import { useTheme } from '@mui/system';
+import { store } from "@/redux/store";
+import { fetchProducts } from "@/redux/reducers/productSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { ProductState } from "@/types/interfaces";
+import Link from "next/link";
 
 const products = [
   {
@@ -73,7 +80,17 @@ const darkLogos = [
 ];
 
 export default function Products() {
+  const dispatch = useDispatch();
+  const products = useSelector((state: { product: ProductState }) => state.product.products);
   const theme = useTheme();
+
+  useEffect(() => {
+    store.dispatch(fetchProducts());
+  }, [dispatch]);
+
+  useEffect(() => {
+    console.log(products);
+  }, [products]);
 
   return (
     <Container
@@ -87,7 +104,7 @@ export default function Products() {
         gap: { xs: 3, sm: 6 },
       }}
     >
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex' }} width={'100%'}>
         <Box sx={{ width: { md: '25%', xl: '20%' } }} className="category-sidebar">
           <Typography
             component="h2"
@@ -119,27 +136,33 @@ export default function Products() {
                     flexGrow: 1,
                   }}
                 >
-                  <CardContent>
-                    <Typography
-                      variant="body1"
-                      gutterBottom
-                      sx={{ color: 'text.secondary' }}
-                    >
-                      {product.testimonial}
-                    </Typography>
-                  </CardContent>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <CardHeader
-                      title={product.name}
-                      subheader={product.occupation}
-                    />
-                  </Box>
+                  <Link href={`/product/${product.id}`}>
+                    <CardContent>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                        }}
+                      >
+                        <CardHeader
+                          title={product.name}
+                        />
+                      </Box>
+                      <Typography
+                        gutterBottom
+                        sx={{ color: 'text.secondary' }}
+                      >
+                        {product.description}
+                      </Typography>
+                      <Typography
+                        gutterBottom
+                        sx={{ color: 'text.primary' }}
+                      >
+                        {product.price}
+                      </Typography>
+                    </CardContent>
+                  </Link>
                 </Card>
               </Grid>
             ))}

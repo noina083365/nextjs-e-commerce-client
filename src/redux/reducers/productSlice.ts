@@ -17,34 +17,34 @@ const initialState: ProductState = {
 	error: null,
 };
 
-// const apiUrl = process.env.NEXT_PUBLIC_API;
+const apiUrl = process.env.NEXT_PUBLIC_API;
 
 export const fetchProducts = createAsyncThunk('products/fetchProducts', async () => {
-	const api = `/api/products`;
+	const api = `${apiUrl}/api/products`;
 	const response = await axios.get(api).catch((err) => console.log(err));
 	return response && response.data ? response.data : [];
 });
 
 export const fetchProduct = createAsyncThunk('products/fetchProduct', async (id: string) => {
-	const api = `/api/products/${id}`;
+	const api = `${apiUrl}/api/products/${id}`;
 	const response = await axios.get(api);
 	return response.data;
 });
 
 export const createProduct = createAsyncThunk('products/createProduct', async (data: createProductInput) => {
-	const api = `/api/products`;
+	const api = `${apiUrl}/api/products`;
 	const response = await axios.post(api, data);
 	return response.data;
 });
 
 export const editProduct = createAsyncThunk('products/editProduct', async (data: any) => {
-	const api = `/api/products/${data.id}`;
+	const api = `${apiUrl}/api/products/${data.id}`;
 	const response = await axios.patch(api, { name: data.name });
 	return response.data;
 });
 
 export const deleteProduct = createAsyncThunk('products/deleteProduct', async (id: string) => {
-	const api = `/api/products/${id}`;
+	const api = `${apiUrl}/api/products/${id}`;
 	await axios.delete(api);
 	return id;
 });

@@ -18,33 +18,36 @@ const initialState: UserState = {
 	error: null,
 };
 
-// const apiUrl = process.env.NEXT_PUBLIC_API;
+const apiUrl = process.env.NEXT_PUBLIC_API;
 
 export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
-	const api = `/api/users`;
+	const api = `${apiUrl}/api/users`;
 	const response = await axios.get(api).catch((err) => console.log(err));
 	return response && response.data ? response.data : [];
 });
 
 export const fetchUser = createAsyncThunk('users/fetchUser', async (id: string) => {
-	const response = await axios.get(`/api/users/${id}`);
+	const api = `${apiUrl}/api/users/${id}`;
+	const response = await axios.get(api);
 	return response.data;
 });
 
 export const createUser = createAsyncThunk('users/createUser', async (data: any) => {
-	const api = '/api/users';
+	const api = `${apiUrl}/api/users`;
 	const response = await axios.post(api, data);
 	return response.data;
 });
 
 export const editUser = createAsyncThunk('users/editUser', async (data: any) => {
 	const { title, details } = data;
-	const response = await axios.patch(`/api/users/${data.id}`, { title, details });
+	const api = `${apiUrl}/api/users/${data.id}`;
+	const response = await axios.patch(api, { title, details });
 	return response.data;
 });
 
 export const deleteUser = createAsyncThunk('users/deleteUser', async (id: string) => {
-	await axios.delete(`/api/users/${id}`);
+	const api = `${apiUrl}/api/users/${id}`;
+	await axios.delete(api);
 	return id;
 });
 

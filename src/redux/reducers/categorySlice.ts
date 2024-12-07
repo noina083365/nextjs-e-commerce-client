@@ -15,16 +15,16 @@ const initialState: CategoryState = {
 	error: null,
 };
 
-// const apiUrl = process.env.NEXT_PUBLIC_API;
+const apiUrl = process.env.NEXT_PUBLIC_API;
 
 export const fetchCategories = createAsyncThunk('categories/fetchCategories', async () => {
-	const api = `/api/categories`;
+	const api = `${apiUrl}/api/categories`;
 	const response = await axios.get(api).catch((err) => console.log(err));
 	return response && response.data ? response.data : [];
 });
 
 export const fetchCategory = createAsyncThunk('categories/fetchCategory', async (id: string) => {
-	const api = `/api/categories/${id}`;
+	const api = `${apiUrl}/api/categories/${id}`;
 	const response = await axios.get(api);
 	return response.data;
 });
@@ -32,20 +32,20 @@ export const fetchCategory = createAsyncThunk('categories/fetchCategory', async 
 export const createCategory = createAsyncThunk(
 	'categories/createCategory',
 	async (data: CreateCategoryInput) => {
-		const api = `/api/categories`;
+		const api = `${apiUrl}/api/categories`;
 		const response = await axios.post(api, data);
 		return response.data;
 	},
 );
 
 export const editCategory = createAsyncThunk('categories/editCategory', async (data: EditCategoryInput) => {
-	const api = `/api/categories/${data.id}`;
+	const api = `${apiUrl}/api/categories/${data.id}`;
 	const response = await axios.patch(api, { name: data.name });
 	return response.data;
 });
 
 export const deleteCategory = createAsyncThunk('categories/deleteCategory', async (id: string) => {
-	const api = `/api/categories/${id}`;
+	const api = `${apiUrl}/api/categories/${id}`;
 	await axios.delete(api);
 	return id;
 });

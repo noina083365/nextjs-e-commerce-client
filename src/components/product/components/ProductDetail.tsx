@@ -18,6 +18,8 @@ import { Button, Divider, List, ListItem } from "@mui/material";
 import NextImage from 'next/image';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { useCart } from "@/contexts/CartContext";
 
 export default function ProductDetail({ id }: IdParams) {
@@ -41,9 +43,11 @@ export default function ProductDetail({ id }: IdParams) {
         pb: { xs: 8, sm: 16 },
         position: 'relative',
         display: 'flex',
+        flexDirection: 'column'
       }}
     >
-      <Box sx={{ display: 'flex', gap: 2 }} width={'100%'}>
+      <Link href={`/`}><ArrowBackIosIcon />Back to Products</Link>
+      <Box sx={{ display: 'flex', gap: 2, marginTop: 2 }} width={'100%'}>
         <Box sx={{ width: { xs: '50%', sm: '60%', md: '65%', xl: '70%' } }}>
           <div className="preview-image">
             <NextImage
@@ -59,7 +63,7 @@ export default function ProductDetail({ id }: IdParams) {
         <Box sx={{ width: { xs: '50%', sm: '40', md: '35%', xl: '30%' } }}>
           <Card>
             <Typography>
-              <Link href={`/cart`}>Cart</Link>
+              <Link href={`/cart`} className="flex"><ShoppingCartRoundedIcon />Cart</Link>
             </Typography>
             <List>
               {

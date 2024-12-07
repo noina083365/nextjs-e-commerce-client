@@ -13,6 +13,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ColorModeIconDropdown from '@/components/shared-theme/ColorModeIconDropdown';
 import { StyledToolbar } from '@/types/common';
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
+import Link from 'next/link';
 
 export default function AppAppBar() {
   const [open, setOpen] = React.useState(false);
@@ -34,29 +37,10 @@ export default function AppAppBar() {
     >
       <Container maxWidth="lg">
         <StyledToolbar variant="dense" disableGutters theme={undefined} vars={undefined}>
-          <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
-            {/* Brand */}
-            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-              <Button variant="text" color="info" size="small">
-                Features
-              </Button>
-              <Button variant="text" color="info" size="small">
-                Testimonials
-              </Button>
-              <Button variant="text" color="info" size="small">
-                Highlights
-              </Button>
-              <Button variant="text" color="info" size="small">
-                Pricing
-              </Button>
-              <Button variant="text" color="info" size="small" sx={{ minWidth: 0 }}>
-                FAQ
-              </Button>
-              <Button variant="text" color="info" size="small" sx={{ minWidth: 0 }}>
-                Blog
-              </Button>
+          <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }} gap={2}>
+            <Link href={`/`} className='menu-link'><HomeRoundedIcon /> Home</Link>
+              <Link href={`/cart`} className='menu-link'><ShoppingCartRoundedIcon />Cart</Link>
             </Box>
-          </Box>
           <Box
             sx={{
               display: { xs: 'none', md: 'flex' },

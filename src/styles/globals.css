@@ -176,6 +176,12 @@ svg.admin-menu-sidebar-icon {
 	padding: 120px 25px 25px 25px;
 }
 
+.menu-link {
+	display: flex;
+	align-items: center;
+	color: black;
+}
+
 @media only screen and (max-width: 1200px) {}
 
 /* md */

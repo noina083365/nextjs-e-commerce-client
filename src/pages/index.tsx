@@ -1,7 +1,7 @@
-import MarketingPage from '@/components/marketing-page/MarketingPage';
+import ProductPage from '@/components/product/List';
 
 export default function Home() {
 	return (
-		<MarketingPage />
+		<ProductPage />
 	);
 }

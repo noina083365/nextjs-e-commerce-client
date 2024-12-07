@@ -2,9 +2,9 @@ import * as React from 'react';
 import { useCart } from '@/contexts/CartContext';
 import AppTheme from '@/components/shared-theme/AppTheme';
 import CssBaseline from '@mui/material/CssBaseline';
-import AppAppBar from '@/components/product/components/AppAppBar';
+import AppAppBar from '@/components/shared-theme/AppAppBar';
+import Footer from '@/components/shared-theme/Footer';
 import Divider from '@mui/material/Divider';
-import Footer from '@/components/product/components/Footer';
 import { Button, List, ListItem } from '@mui/material';
 
 export default function CartList(props: { disableCustomTheme?: boolean }) {

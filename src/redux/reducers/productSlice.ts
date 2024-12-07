@@ -25,10 +25,16 @@ export const fetchProducts = createAsyncThunk('products/fetchProducts', async ()
 	return response && response.data ? response.data : [];
 });
 
+export const fetchProductsInStock = createAsyncThunk('products/fetchProductsInStock', async () => {
+	const api = `${apiUrl}/api/products/available`;
+	const response = await axios.get(api).catch((err) => console.log(err));
+	return response && response.data ? response.data : currentProduct;
+});
+
 export const fetchProduct = createAsyncThunk('products/fetchProduct', async (id: string) => {
 	const api = `${apiUrl}/api/products/${id}`;
-	const response = await axios.get(api);
-	return response.data;
+	const response = await axios.get(api).catch((err) => console.log(err));
+	return response && response.data ? response.data : currentProduct;
 });
 
 export const createProduct = createAsyncThunk('products/createProduct', async (data: createProductInput) => {
@@ -66,6 +72,8 @@ const sliceOptions: any = {
 				(state: any, action: any) => {
 					state.loading = false;
 					if (action.type.includes('fetchProducts')) {
+						state.products = action.payload;
+					} else if (action.type.includes('fetchProductsInStock')) {
 						state.products = action.payload;
 					} else if (action.type.includes('fetchProduct')) {
 						state.currentProduct = action.payload;

@@ -163,6 +163,15 @@ svg.admin-menu-sidebar-icon {
 	display: none;
 }
 
+.preview-image {
+	display: block;
+	width: 100%;
+	min-height: 300px;
+	max-height: auto;
+	height: auto;
+	position: relative;
+}
+
 @media only screen and (max-width: 1200px) {}
 
 /* md */

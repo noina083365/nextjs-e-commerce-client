@@ -9,7 +9,7 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid2';
 import { useTheme } from '@mui/system';
 
-const userTestimonials = [
+const products = [
   {
     avatar: <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />,
     name: 'Remy Sharp',
@@ -108,7 +108,7 @@ export default function Products() {
             Products
           </Typography>
           <Grid container spacing={2}>
-            {userTestimonials.map((testimonial, index) => (
+            {products.map((product, index) => (
               <Grid size={{ xs: 12, sm: 6, md: 4 }} key={index} sx={{ display: 'flex' }}>
                 <Card
                   variant="outlined"
@@ -125,7 +125,7 @@ export default function Products() {
                       gutterBottom
                       sx={{ color: 'text.secondary' }}
                     >
-                      {testimonial.testimonial}
+                      {product.testimonial}
                     </Typography>
                   </CardContent>
                   <Box
@@ -136,9 +136,8 @@ export default function Products() {
                     }}
                   >
                     <CardHeader
-                      avatar={testimonial.avatar}
-                      title={testimonial.name}
-                      subheader={testimonial.occupation}
+                      title={product.name}
+                      subheader={product.occupation}
                     />
                   </Box>
                 </Card>

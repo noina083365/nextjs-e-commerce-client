@@ -115,14 +115,6 @@ export default function SignUpCustomerPage(props: { disableCustomTheme?: boolean
     if (nameError || emailError || passwordError) {
       return;
     }
-    const data = new FormData(event.currentTarget);
-
-    console.log({
-      name: data.get('name'),
-      lastName: data.get('lastName'),
-      email: data.get('email'),
-      password: data.get('password'),
-    });
 
     const result: any = await store.dispatch(createRegister({ ...authData }));
 
@@ -231,7 +223,7 @@ export default function SignUpCustomerPage(props: { disableCustomTheme?: boolean
             <Typography sx={{ textAlign: 'center' }}>
               Already have an account?{' '}
               <Link
-                href="/login"
+                href="/sign-in"
                 variant="body2"
                 sx={{ alignSelf: 'center' }}
               >

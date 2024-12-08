@@ -1,4 +1,6 @@
-import * as React from 'react';
+'use client'
+
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import MuiCard from '@mui/material/Card';
@@ -12,51 +14,50 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
+import Card from '@mui/material/Card';
+import { createLogin } from '@/redux/reducers/authSlice';
+import { store } from '@/redux/store';
+import { createRegister } from '@/redux/reducers/authSlice';
+import { CreateRegisterInput, resetRegisterForm } from '@/types/auth';
+import { redirect } from 'next/navigation';
 // import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
-
-const Card = styled(MuiCard)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  alignSelf: 'center',
-  width: '100%',
-  padding: theme.spacing(4),
-  gap: theme.spacing(2),
-  boxShadow:
-    'hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px',
-  [theme.breakpoints.up('sm')]: {
-    width: '450px',
-  },
-  ...theme.applyStyles('dark', {
-    boxShadow:
-      'hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px',
-  }),
-}));
 
 export default function SignInCard() {
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
-  const [open, setOpen] = React.useState(false);
+  const [authData, setAuthData] = useState<CreateRegisterInput>(resetRegisterForm);
+  const [submitMessage, setSubmitMessage] = useState('');
+  // const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  // const handleClickOpen = () => {
+  //   setOpen(true);
+  // };
+
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
+
+  const handleChange = (e: any) => {
+    setAuthData({ ...authData, [e.target.name]: e.target.value });
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (emailError || passwordError) {
-      event.preventDefault();
       return;
     }
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    console.log(authData);
+    const result: any = await store.dispatch(createLogin({ ...authData }));
+
+    if (result.payload.success) {
+      setSubmitMessage('');
+      redirect('/');
+    } else {
+      const message = result.message ? result.message : result.payload.message;
+      setSubmitMessage(message || 'An error occurred.');
+    }
   };
 
   const validateInputs = () => {
@@ -87,7 +88,12 @@ export default function SignInCard() {
   };
 
   return (
-    <Card variant="outlined">
+    <Card variant="outlined" sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignSelf: 'center',
+      width: '100%'
+    }}>
       {/* <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
         <SitemarkIcon />
       </Box> */}
@@ -98,6 +104,13 @@ export default function SignInCard() {
       >
         Sign in
       </Typography>
+      <Typography>
+        {submitMessage && (
+          <div className="px-10 w-full sm:mx-auto sm:w-full sm:max-w-sm">
+            <label className="block mb-2 text-sm font-medium text-red-900 dark:text-red">{submitMessage}</label>
+          </div>
+        )}
+      </Typography>
       <Box
         component="form"
         onSubmit={handleSubmit}
@@ -105,13 +118,13 @@ export default function SignInCard() {
         sx={{ display: 'flex', flexDirection: 'column', width: '100%', gap: 2 }}
       >
         <FormControl>
-          <FormLabel htmlFor="email">Email</FormLabel>
+          <FormLabel htmlFor="username">Email</FormLabel>
           <TextField
             error={emailError}
             helperText={emailErrorMessage}
-            id="email"
+            id="username"
             type="email"
-            name="email"
+            name="username"
             placeholder="your@email.com"
             autoComplete="email"
             autoFocus
@@ -119,6 +132,7 @@ export default function SignInCard() {
             fullWidth
             variant="outlined"
             color={emailError ? 'error' : 'primary'}
+            onChange={handleChange}
           />
         </FormControl>
         <FormControl>
@@ -147,6 +161,7 @@ export default function SignInCard() {
             fullWidth
             variant="outlined"
             color={passwordError ? 'error' : 'primary'}
+            onChange={handleChange}
           />
         </FormControl>
         {/* <FormControlLabel
@@ -161,7 +176,7 @@ export default function SignInCard() {
           Don&apos;t have an account?{' '}
           <span>
             <Link
-              href="/register"
+              href="/sign-up"
               variant="body2"
               sx={{ alignSelf: 'center' }}
             >

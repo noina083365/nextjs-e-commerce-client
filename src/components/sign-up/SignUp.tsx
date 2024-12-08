@@ -1,4 +1,6 @@
-import * as React from 'react';
+'use client'
+
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
@@ -14,6 +16,10 @@ import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import AppTheme from '../shared-theme/AppTheme';
+import { createRegister } from '@/redux/reducers/authSlice';
+import { store } from '@/redux/store';
+import { CreateRegisterInput, resetRegisterForm } from '@/types/auth';
+import { redirect } from 'next/navigation';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -57,16 +63,18 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-export default function SignUp(props: { disableCustomTheme?: boolean }) {
+export default function SignUpCustomerPage(props: { disableCustomTheme?: boolean }) {
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [nameError, setNameError] = React.useState(false);
   const [nameErrorMessage, setNameErrorMessage] = React.useState('');
+  const [authData, setAuthData] = useState<CreateRegisterInput>(resetRegisterForm);
+  const [submitMessage, setSubmitMessage] = useState('');
 
   const validateInputs = () => {
-    const email = document.getElementById('email') as HTMLInputElement;
+    const email = document.getElementById('username') as HTMLInputElement;
     const password = document.getElementById('password') as HTMLInputElement;
     const name = document.getElementById('name') as HTMLInputElement;
 
@@ -102,19 +110,34 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     return isValid;
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (nameError || emailError || passwordError) {
-      event.preventDefault();
       return;
     }
     const data = new FormData(event.currentTarget);
+
     console.log({
       name: data.get('name'),
       lastName: data.get('lastName'),
       email: data.get('email'),
       password: data.get('password'),
     });
+
+    const result: any = await store.dispatch(createRegister({ ...authData }));
+
+    if (result.payload.success) {
+      setSubmitMessage('');
+      redirect('/');
+    } else {
+      const message = result.message ? result.message : result.payload.message;
+      setSubmitMessage(message || 'An error occurred.');
+    }
   };
+
+	const handleChange = (e: any) => {
+		setAuthData({ ...authData, [e.target.name]: e.target.value });
+	};
 
   return (
     <AppTheme {...props}>
@@ -128,12 +151,19 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
           >
             Sign up
           </Typography>
+          <Typography>
+            {submitMessage && (
+              <div className="mt-5 px-10 w-full sm:mx-auto sm:w-full sm:max-w-sm">
+                <label className="block text-sm font-medium text-red-900 dark:text-red">{submitMessage}</label>
+              </div>
+            )}
+          </Typography>
           <Box
             component="form"
             onSubmit={handleSubmit}
             sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
           >
-            <FormControl>
+            {/* <FormControl>
               <FormLabel htmlFor="name">Full name</FormLabel>
               <TextField
                 autoComplete="name"
@@ -145,21 +175,23 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                 error={nameError}
                 helperText={nameErrorMessage}
                 color={nameError ? 'error' : 'primary'}
+                onChange={handleChange}
               />
-            </FormControl>
+            </FormControl> */}
             <FormControl>
-              <FormLabel htmlFor="email">Email</FormLabel>
+              <FormLabel htmlFor="username">Email</FormLabel>
               <TextField
                 required
                 fullWidth
-                id="email"
+                id="username"
                 placeholder="your@email.com"
-                name="email"
+                name="username"
                 autoComplete="email"
                 variant="outlined"
                 error={emailError}
                 helperText={emailErrorMessage}
                 color={passwordError ? 'error' : 'primary'}
+                onChange={handleChange}
               />
             </FormControl>
             <FormControl>
@@ -176,6 +208,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
                 error={passwordError}
                 helperText={passwordErrorMessage}
                 color={passwordError ? 'error' : 'primary'}
+                onChange={handleChange}
               />
             </FormControl>
             {/* <FormControlLabel

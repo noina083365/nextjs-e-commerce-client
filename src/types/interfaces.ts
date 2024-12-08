@@ -2,6 +2,12 @@ import { ReactNode } from 'react';
 import { Category } from './category';
 import { Product } from './product';
 
+export interface AuthState {
+	currentAuth: any;
+	loading: boolean;
+	error: any;
+	result: any;
+}
 export interface ProductState {
 	products: Product[];
 	currentProduct: any;

@@ -48,10 +48,11 @@ export default function SignInCard() {
     if (emailError || passwordError) {
       return;
     }
-    console.log(authData);
+
     const result: any = await store.dispatch(createLogin({ ...authData }));
 
     if (result.payload.success) {
+      localStorage.setItem('token', result.payload.accessToken);
       setSubmitMessage('');
       redirect('/');
     } else {

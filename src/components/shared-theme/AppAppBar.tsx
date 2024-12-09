@@ -38,9 +38,11 @@ export default function AppAppBar() {
       <Container maxWidth="lg">
         <StyledToolbar variant="dense" disableGutters theme={undefined} vars={undefined}>
           <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }} gap={2}>
-            <Link href={`/`} className='menu-link'><HomeRoundedIcon /> Home</Link>
+            <Link href={`/`} className='menu-link'><HomeRoundedIcon /></Link>
+            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
               <Link href={`/cart`} className='menu-link'><ShoppingCartRoundedIcon />Cart</Link>
             </Box>
+          </Box>
           <Box
             sx={{
               display: { xs: 'none', md: 'flex' },
@@ -48,11 +50,11 @@ export default function AppAppBar() {
               alignItems: 'center',
             }}
           >
-            <Button color="primary" variant="text" size="small">
-              Sign in
+            <Button color="primary" variant="outlined" size="small">
+              <Link href={`/sign-in`} className='menu-link'>Sign in</Link>
             </Button>
-            <Button color="primary" variant="contained" size="small">
-              Sign up
+            <Button color="primary" variant="outlined" size="small">
+              <Link href={`/sign-up`} className='menu-link'>Sign up</Link>
             </Button>
             <ColorModeIconDropdown />
           </Box>
@@ -91,7 +93,7 @@ export default function AppAppBar() {
                 <MenuItem>Blog</MenuItem>
                 <Divider sx={{ my: 3 }} />
                 <MenuItem>
-                  <Button color="primary" variant="contained" fullWidth>
+                  <Button color="primary" variant="outlined" fullWidth>
                     Sign up
                   </Button>
                 </MenuItem>

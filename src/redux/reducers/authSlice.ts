@@ -15,10 +15,10 @@ const initialState: AuthState = {
   result: {},
 };
 
-const apiUrl = process.env.NEXT_PUBLIC_API;
+const origin = typeof window !== 'undefined' && window.location.origin ? window.location.origin : '';
 
 export const createRegister = createAsyncThunk('auth/createRegister', async (data: CreateRegisterInput) => {
-  const api = `${apiUrl}/api/auth/customer-register`;
+  const api = `${origin}/api/auth/customer-register`;
   try {
     const response = await axios.post(api, data);
     return response && response.data ? { ...response.data, success: true } : {};
@@ -32,7 +32,7 @@ export const createRegister = createAsyncThunk('auth/createRegister', async (dat
 });
 
 export const createLogin = createAsyncThunk('auth/createLogin', async (data: CreateLoginInput) => {
-  const api = `${apiUrl}/api/auth/customer-login`;
+  const api = `${origin}/api/auth/customer-login`;
   try {
     const response = await axios.post(api, data);
     return response && response.data ? { ...response.data, success: true } : {};
@@ -46,7 +46,7 @@ export const createLogin = createAsyncThunk('auth/createLogin', async (data: Cre
 });
 
 export const createLogout = createAsyncThunk('auth/createLogout', async () => {
-  const api = `${apiUrl}/api/auth/logout`;
+  const api = `${origin}/api/auth/logout`;
   try {
     const response = await axios.get(api);
     return response && response.data ? { ...response.data, success: true } : {};
@@ -57,7 +57,7 @@ export const createLogout = createAsyncThunk('auth/createLogout', async () => {
 });
 
 export const fetchToken = createAsyncThunk('auth/fetchToken', async () => {
-  const api = `${apiUrl}/api/auth/token`;
+  const api = `${origin}/api/auth/token`;
   try {
     const response = await axios.get(api);
     return response && response.data ? { ...response.data, success: true } : {};

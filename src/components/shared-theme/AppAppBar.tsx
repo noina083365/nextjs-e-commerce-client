@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
+import { createLogout } from '@/redux/reducers/authSlice';
+import { store } from '@/redux/store';
+import { redirect } from 'next/navigation';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
@@ -17,8 +18,13 @@ import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 import Link from 'next/link';
 
-export default function AppAppBar() {
+export default function AppAppBar({ token }: any) {
   const [open, setOpen] = React.useState(false);
+
+  const handleLogout = async () => {
+    await store.dispatch(createLogout());
+    redirect('/');
+  };
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
@@ -50,12 +56,30 @@ export default function AppAppBar() {
               alignItems: 'center',
             }}
           >
-            <Button color="primary" variant="outlined" size="small">
-              <Link href={`/sign-in`} className='menu-link'>Sign in</Link>
-            </Button>
-            <Button color="primary" variant="outlined" size="small">
-              <Link href={`/sign-up`} className='menu-link'>Sign up</Link>
-            </Button>
+            {
+              token ?
+                (
+                  <Button
+                    color="primary"
+                    variant="outlined"
+                    size="small"
+                    onClick={() => handleLogout()}
+                  >
+                    Logout
+                  </Button>
+                )
+                :
+                (
+                  <>
+                    <Button color="primary" variant="outlined" size="small">
+                      <Link href={`/sign-in`} className='menu-link'>Sign in</Link>
+                    </Button>
+                    <Button color="primary" variant="outlined" size="small">
+                      <Link href={`/sign-up`} className='menu-link'>Sign up</Link>
+                    </Button>
+                  </>
+                )
+            }
             <ColorModeIconDropdown />
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' }, gap: 1 }}>
@@ -92,16 +116,25 @@ export default function AppAppBar() {
                 <MenuItem>FAQ</MenuItem>
                 <MenuItem>Blog</MenuItem>
                 <Divider sx={{ my: 3 }} />
-                <MenuItem>
-                  <Button color="primary" variant="outlined" fullWidth>
-                    Sign up
-                  </Button>
-                </MenuItem>
-                <MenuItem>
-                  <Button color="primary" variant="outlined" fullWidth>
-                    Sign in
-                  </Button>
-                </MenuItem>
+                {
+                  token ?
+                    (
+                      <MenuItem>
+                        <Link href={`/logout`}>Logout</Link>
+                      </MenuItem>
+                    )
+                    :
+                    (
+                      <>
+                        <MenuItem>
+                          <Link href={`/sign-up`}>Sign up</Link>
+                        </MenuItem>
+                        <MenuItem>
+                          <Link href={`/sign-in`}>Sign in</Link>
+                        </MenuItem>
+                      </>
+                    )
+                }
               </Box>
             </Drawer>
           </Box>

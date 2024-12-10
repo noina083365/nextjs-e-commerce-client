@@ -7,7 +7,7 @@ export async function GET(): Promise<any> {
 		const cookieStore = await cookies();
 		cookieStore.delete({ name: 'token' });
 
-		return Response.json(JSON.stringify({ message: 'Cookie deleted successfully.' }), {
+		return Response.json({ message: 'Cookie deleted successfully.' }, {
 			status: 200,
 		});
 	} catch (error: any) {

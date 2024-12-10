@@ -1,11 +1,11 @@
 'use server';
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { cookies } from 'next/headers';
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
 	try {
 		const { username, password } = await req.json();
 

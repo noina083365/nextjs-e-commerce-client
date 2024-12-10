@@ -62,47 +62,50 @@ export default function Products() {
             Products
           </Typography>
           <Grid container spacing={2}>
-            {products.map((product, index) => (
-              <Grid size={{ xs: 12, sm: 6, md: 4 }} key={index} sx={{ display: 'flex' }}>
-                <Card
-                  variant="outlined"
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    flexGrow: 1,
-                  }}
-                >
-                  <Link href={`/product/${product.id}`}>
-                    <CardContent>
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                        }}
-                      >
-                        <CardHeader
-                          title={product.name}
-                        />
-                      </Box>
-                      <Typography
-                        gutterBottom
-                        sx={{ color: 'text.secondary' }}
-                      >
-                        {product.description}
-                      </Typography>
-                      <Typography
-                        gutterBottom
-                        sx={{ color: 'text.primary' }}
-                      >
-                        {product.price}
-                      </Typography>
-                    </CardContent>
-                  </Link>
-                </Card>
-              </Grid>
-            ))}
+            {
+              products && products.length > 0 &&
+              products.map((product, index) => (
+                <Grid size={{ xs: 12, sm: 6, md: 4 }} key={index} sx={{ display: 'flex' }}>
+                  <Card
+                    variant="outlined"
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                      flexGrow: 1,
+                    }}
+                  >
+                    <Link href={`/product/${product.id}`}>
+                      <CardContent>
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                          }}
+                        >
+                          <CardHeader
+                            title={product.name}
+                          />
+                        </Box>
+                        <Typography
+                          gutterBottom
+                          sx={{ color: 'text.secondary' }}
+                        >
+                          {product.description}
+                        </Typography>
+                        <Typography
+                          gutterBottom
+                          sx={{ color: 'text.primary' }}
+                        >
+                          {product.price}
+                        </Typography>
+                      </CardContent>
+                    </Link>
+                  </Card>
+                </Grid>
+              ))
+            }
           </Grid>
         </Box>
       </Box>

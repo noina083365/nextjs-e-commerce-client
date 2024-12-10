@@ -2,12 +2,11 @@
 
 import { useEffect } from "react";
 import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import Avatar from '@mui/material/Avatar';
+import { useRouter } from 'next/navigation';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { padding, useTheme } from '@mui/system';
+import { useTheme } from '@mui/system';
 import { store } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { ProductState } from "@/types/interfaces";
@@ -22,15 +21,24 @@ import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { useCart } from "@/contexts/CartContext";
 
-export default function ProductDetail({ id }: IdParams) {
+export default function ProductDetail({ id, token }: any) {
   const dispatch = useDispatch();
   const product = useSelector((state: { product: ProductState }) => state.product.currentProduct);
   const { addToCart, cart, totalPrice } = useCart();
+  const router = useRouter();
   const theme = useTheme();
 
   useEffect(() => {
     store.dispatch(fetchProduct(id));
   }, [dispatch]);
+
+  const checkAddToCart = () => {
+    if (token) {
+      addToCart({ ...product, quantity: 1 });
+    } else {
+      router.push('/sign-in');
+    }
+  }
 
   // useEffect(() => {
   //   console.log(product);
@@ -104,7 +112,7 @@ export default function ProductDetail({ id }: IdParams) {
               color="secondary"
               sx={{ flex: 1 }}
               startIcon={<AddShoppingCartIcon />}
-              onClick={() => addToCart({ ...product, quantity: 1 })}
+              onClick={checkAddToCart}
             >
               Add to cart
             </Button>

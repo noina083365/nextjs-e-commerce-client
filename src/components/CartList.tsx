@@ -7,13 +7,13 @@ import Footer from '@/components/shared-theme/Footer';
 import Divider from '@mui/material/Divider';
 import { Button, List, ListItem } from '@mui/material';
 
-export default function CartList(props: { disableCustomTheme?: boolean }) {
+export default function CartList({ token }: any, props: { disableCustomTheme?: boolean }) {
   const { cart, removeFromCart, clearCart, totalPrice } = useCart();
 
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
-      <AppAppBar />
+      <AppAppBar token={token} />
       <div className="cart-area">
         <h2>Cart</h2>
         {

@@ -7,14 +7,14 @@ import ProductDetail from './components/ProductDetail';
 import Divider from '@mui/material/Divider';
 import { IdParams } from '@/types/common';
 
-export default function DetailPage({ id }: IdParams, props: { disableCustomTheme?: boolean }) {
+export default function DetailPage({ id, token }: any, props: { disableCustomTheme?: boolean }) {
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
 
-      <AppAppBar />
+      <AppAppBar token={token} />
       <div>
-        <ProductDetail id={id} />
+        <ProductDetail id={id} token={token} />
         <Divider />
         <Footer />
       </div>

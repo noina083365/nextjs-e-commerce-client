@@ -19,7 +19,7 @@ import { createLogin } from '@/redux/reducers/authSlice';
 import { store } from '@/redux/store';
 import { createRegister } from '@/redux/reducers/authSlice';
 import { CreateRegisterInput, resetRegisterForm } from '@/types/auth';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 // import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
 
 export default function SignInCard() {
@@ -29,6 +29,7 @@ export default function SignInCard() {
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [authData, setAuthData] = useState<CreateRegisterInput>(resetRegisterForm);
   const [submitMessage, setSubmitMessage] = useState('');
+  const router = useRouter();
   // const [open, setOpen] = React.useState(false);
 
   // const handleClickOpen = () => {
@@ -53,7 +54,7 @@ export default function SignInCard() {
 
     if (result.payload.success) {
       setSubmitMessage('');
-      redirect('/');
+      router.push('/');
     } else {
       const message = result.message ? result.message : result.payload.message;
       setSubmitMessage(message || 'An error occurred.');
@@ -61,12 +62,12 @@ export default function SignInCard() {
   };
 
   const validateInputs = () => {
-    const email = document.getElementById('email') as HTMLInputElement;
+    const email = document.getElementById('username') as HTMLInputElement;
     const password = document.getElementById('password') as HTMLInputElement;
 
     let isValid = true;
 
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
+    if (!email.value) {
       setEmailError(true);
       setEmailErrorMessage('Please enter a valid email address.');
       isValid = false;

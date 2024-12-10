@@ -19,7 +19,7 @@ import AppTheme from '../shared-theme/AppTheme';
 import { createRegister } from '@/redux/reducers/authSlice';
 import { store } from '@/redux/store';
 import { CreateRegisterInput, resetRegisterForm } from '@/types/auth';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -72,6 +72,7 @@ export default function SignUpCustomerPage(props: { disableCustomTheme?: boolean
   const [nameErrorMessage, setNameErrorMessage] = React.useState('');
   const [authData, setAuthData] = useState<CreateRegisterInput>(resetRegisterForm);
   const [submitMessage, setSubmitMessage] = useState('');
+  const router = useRouter();
 
   const validateInputs = () => {
     const email = document.getElementById('username') as HTMLInputElement;
@@ -120,7 +121,7 @@ export default function SignUpCustomerPage(props: { disableCustomTheme?: boolean
 
     if (result.payload.success) {
       setSubmitMessage('');
-      redirect('/');
+      router.push('/');
     } else {
       const message = result.message ? result.message : result.payload.message;
       setSubmitMessage(message || 'An error occurred.');

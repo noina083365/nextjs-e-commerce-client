@@ -3,15 +3,16 @@
 import React, { useEffect } from 'react';
 import { createLogout } from '@/redux/reducers/authSlice';
 import { store } from '@/redux/store';
-import { redirect } from 'next/navigation';
 import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/navigation';
 
 export default function Logout() {
 	const dispatch = useDispatch();
+	const router = useRouter();
 
 	useEffect(() => {
 		store.dispatch(createLogout());
-		redirect('/');
+		router.push('/');
 	}, [dispatch]);
 
 	return <></>;

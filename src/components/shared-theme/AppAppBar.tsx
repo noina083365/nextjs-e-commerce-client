@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 import { createLogout } from '@/redux/reducers/authSlice';
 import { store } from '@/redux/store';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
@@ -20,10 +20,11 @@ import Link from 'next/link';
 
 export default function AppAppBar({ token }: any) {
   const [open, setOpen] = React.useState(false);
+  const router = useRouter();
 
   const handleLogout = async () => {
     await store.dispatch(createLogout());
-    redirect('/');
+    router.push('/');
   };
 
   const toggleDrawer = (newOpen: boolean) => () => {

@@ -18,7 +18,7 @@ import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 import Link from 'next/link';
 
-export default function AppAppBar({ token }: any) {
+export default function AppAppBar({ user }: any) {
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
 
@@ -58,7 +58,7 @@ export default function AppAppBar({ token }: any) {
             }}
           >
             {
-              token ?
+              user?.id ?
                 (
                   <Button
                     color="primary"
@@ -118,7 +118,7 @@ export default function AppAppBar({ token }: any) {
                 <MenuItem>Blog</MenuItem>
                 <Divider sx={{ my: 3 }} />
                 {
-                  token ?
+                  user?.id ?
                     (
                       <MenuItem>
                         <Link href={`/logout`}>Logout</Link>

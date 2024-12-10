@@ -20,9 +20,9 @@ const initialState: CartState = {
 
 const apiUrl = process.env.NEXT_PUBLIC_API;
 
-export const updateCart = createAsyncThunk('carts/updateCart', async () => {
+export const updateCart = createAsyncThunk('carts/updateCart', async (customerCart: any) => {
   const api = `${apiUrl}/api/carts`;
-  const response = await axios.get(api).catch((err) => console.log(err));
+  const response = await axios.post(api, customerCart).catch((err) => console.log(err));
   return response && response.data ? response.data : null;
 });
 

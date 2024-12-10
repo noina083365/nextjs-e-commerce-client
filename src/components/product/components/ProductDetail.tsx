@@ -56,7 +56,7 @@ export default function ProductDetail({ id, user }: any) {
       total_price: totalPrice
     }
     console.log(customerCart);
-    // const result: any = store.dispatch(updateCart(cartItem));
+    const result: any = store.dispatch(updateCart(customerCart));
   }, [cart]);
 
   return (

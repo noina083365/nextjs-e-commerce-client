@@ -3,22 +3,21 @@ import { GetServerSidePropsContext } from 'next';
 import { IdParams } from '@/types/common';
 import DetailPage from '@/components/product/Detail';
 import { extractCookie } from '@/utils/common';
+import { jwtDecode } from 'jwt-decode';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const { id } = context.query;
 	const cookies = context.req.headers.cookie;
 	const accessToken = extractCookie(cookies);
+	const user: any = jwtDecode(accessToken) || null;
 	return {
-		props: {
-			id,
-			token: accessToken || null,
-		}
+		props: { id, user }
 	};
 }
 
-const Detail = ({ id, token }: any) => {
+const Detail = ({ id, user }: any) => {
 	return (
-		<DetailPage id={id} token={token} />
+		<DetailPage id={id} user={user} />
 	);
 };
 

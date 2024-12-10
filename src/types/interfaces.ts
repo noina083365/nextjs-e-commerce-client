@@ -29,6 +29,13 @@ export interface UserState {
 	error: any;
 }
 
+export interface CartState {
+	carts: any[];
+	currentCart: any;
+	loading: boolean;
+	error: any;
+}
+
 export interface LayoutItemProviderProps {
 	children: ReactNode;
 }

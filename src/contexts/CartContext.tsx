@@ -33,7 +33,6 @@ export const CartProvider = ({
           item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
         );
       }
-      // TODO: Store to DB
       return [...prevCart, { ...product, quantity: 1 }];
     });
   };

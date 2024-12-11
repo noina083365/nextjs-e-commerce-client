@@ -16,11 +16,11 @@ export default function App({ Component, pageProps }: AppProps) {
 			</Head>
 
 			<ReduxProvider>
-				<SidebarProvider>
-					<CartProvider>
+				<CartProvider>
+					<SidebarProvider>
 						<Component {...pageProps} />
-					</CartProvider>
-				</SidebarProvider>
+					</SidebarProvider>
+				</CartProvider>
 			</ReduxProvider>
 		</>
 	);

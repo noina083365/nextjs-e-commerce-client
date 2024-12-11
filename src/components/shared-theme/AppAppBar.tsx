@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 import { createLogout } from '@/redux/reducers/authSlice';
@@ -21,6 +21,11 @@ import Link from 'next/link';
 export default function AppAppBar({ user }: any) {
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
+
+  if (typeof window !== 'undefined' && user?.id) {
+    localStorage.setItem('customerId', user?.id);
+  }
+  // TODO: redux get total product in cart to show badge
 
   const handleLogout = async () => {
     await store.dispatch(createLogout());

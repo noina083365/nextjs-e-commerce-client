@@ -11,7 +11,6 @@ import { store } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { ProductState } from "@/types/interfaces";
 import Link from "next/link";
-import { IdParams } from "@/types/common";
 import { fetchProduct } from "@/redux/reducers/productSlice";
 import { Button, Divider, List, ListItem } from "@mui/material";
 import NextImage from 'next/image';
@@ -20,7 +19,6 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { useCart } from "@/contexts/CartContext";
-import { updateCart } from "@/redux/reducers/cartSlice";
 import _ from 'lodash';
 
 export default function ProductDetail({ id, user }: any) {
@@ -41,23 +39,6 @@ export default function ProductDetail({ id, user }: any) {
       router.push('/sign-in');
     }
   }
-
-  // useEffect(() => {
-  //   console.log(product);
-  // }, [product]);
-
-  useEffect(() => {
-    const cartItems = cart.map(cItem => {
-      return { ..._.pick(cItem, ['id', 'quantity', 'price']) };
-    });
-    const customerCart = {
-      customerId: user.id,
-      cartItems,
-      total_price: totalPrice
-    }
-    console.log(customerCart);
-    const result: any = store.dispatch(updateCart(customerCart));
-  }, [cart]);
 
   return (
     <Container

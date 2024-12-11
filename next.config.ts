@@ -1,7 +1,7 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-	reactStrictMode: true,
+	// reactStrictMode: true, // Comment to fix nextjs send double request
 	images: {
 		remotePatterns: [
 			{

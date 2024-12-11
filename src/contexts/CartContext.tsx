@@ -1,20 +1,12 @@
-import { Product } from '@/types/product';
-import React, { createContext, ReactNode, useContext, useState } from 'react';
+'use client'
 
-interface CartItem {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number; // Product type does not has quantity
-}
-
-interface CartContextType {
-  cart: CartItem[];
-  addToCart: (product: CartItem) => void;
-  removeFromCart: (id: string) => void;
-  clearCart: () => void;
-  totalPrice: number;
-}
+import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import { store } from '@/redux/store';
+import { updateCart } from '@/redux/reducers/cartSlice';
+import _ from 'lodash';
+import axios from 'axios';
+import { CartContextType, CartItem } from '@/types/interfaces';
+import { fillInCart } from '@/utils/common';
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
@@ -25,15 +17,48 @@ export const CartProvider = ({
 }>) => {
   const [cart, setCart] = useState<CartItem[]>([]);
 
+  const loadCustomerOpenCart = async () => {
+    const custId = localStorage.getItem('customerId');
+    const customerId = custId ? +custId : 0;
+    const apiUrl = process.env.NEXT_PUBLIC_API;
+    const api = `${apiUrl}/api/carts/customer/${customerId}`;
+    const response = await axios.get(api).catch((err) => console.log(err));
+    const productsInCart: CartItem[] = response?.data ? response?.data : [];
+
+    if (productsInCart && productsInCart.length > 0) {
+      productsInCart.map((product: CartItem) => {
+        setCart((prevCart) => [...prevCart, { ...product }]);
+      });
+    }
+  }
+
+  useEffect(() => {
+    loadCustomerOpenCart();
+  }, []);
+
+  const updateCustomerCart = (cartItem: CartItem[]) => {
+    const cartItems = cartItem.map((cItem: any) => {
+      return { ..._.pick(cItem, ['id', 'quantity', 'price']) };
+    });
+    const totalPrice = cartItems.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
+    const custId = localStorage.getItem('customerId');
+    const customerId = custId ? +custId : 0;
+    const customerCart = {
+      customerId,
+      cartItems,
+      total_price: totalPrice
+    }
+    store.dispatch(updateCart(customerCart));
+  }
+
   const addToCart = (product: CartItem) => {
     setCart((prevCart) => {
-      const existingProduct = prevCart.find((item) => item.id === product.id);
-      if (existingProduct) {
-        return prevCart.map((item: CartItem) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-        );
-      }
-      return [...prevCart, { ...product, quantity: 1 }];
+      const cartItem: CartItem[] = fillInCart(prevCart, product);
+      updateCustomerCart(cartItem);
+      return cartItem;
     });
   };
 

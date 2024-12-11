@@ -20,6 +20,12 @@ const initialState: CartState = {
 
 const apiUrl = process.env.NEXT_PUBLIC_API;
 
+export const customerCartOpen = createAsyncThunk('carts/customerCartOpen', async (customerId: number) => {
+  const api = `${apiUrl}/api/carts/customer/${customerId}`;
+  const response = await axios.get(api).catch((err) => console.log(err));
+  return response && response.data ? response.data : null;
+});
+
 export const updateCart = createAsyncThunk('carts/updateCart', async (customerCart: any) => {
   const api = `${apiUrl}/api/carts`;
   const response = await axios.post(api, customerCart).catch((err) => console.log(err));
@@ -48,7 +54,9 @@ const sliceOptions: any = {
         (action: any) => action.type.endsWith('/fulfilled'),
         (state: any, action: any) => {
           state.loading = false;
-          if (action.type.includes('updateCart')) {
+          if (action.type.includes('customerCartOpen')) {
+            state.carts = action.payload;
+          } else if (action.type.includes('updateCart')) {
             state.carts = action.payload;
           } else if (action.type.includes('deleteCart')) {
             state.carts = state.carts.filter((product: Product) => {

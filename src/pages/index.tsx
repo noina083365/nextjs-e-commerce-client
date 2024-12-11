@@ -1,16 +1,13 @@
 import ProductPage from '@/components/product/List';
-import { extractCookie } from '@/utils/common';
+import { checkTokenExist } from '@/utils/common';
 import { GetServerSidePropsContext } from 'next';
-import { jwtDecode } from 'jwt-decode';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const cookies = context.req.headers.cookie;
-	const accessToken = extractCookie(cookies);
-	const user: any = jwtDecode(accessToken) || null;
-
+	const customer = checkTokenExist(cookies);
 	return {
 		props: {
-			user,
+			user: customer,
 		},
 	};
 }

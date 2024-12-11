@@ -36,6 +36,21 @@ export interface CartState {
 	error: any;
 }
 
+export interface CartItem {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number; // Product type does not has quantity
+}
+
+export interface CartContextType {
+  cart: CartItem[];
+  addToCart: (product: CartItem) => void;
+  removeFromCart: (id: string) => void;
+  clearCart: () => void;
+  totalPrice: number;
+}
+
 export interface LayoutItemProviderProps {
 	children: ReactNode;
 }

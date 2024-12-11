@@ -1,17 +1,14 @@
 import React from 'react';
 import { GetServerSidePropsContext } from 'next';
-import { IdParams } from '@/types/common';
 import DetailPage from '@/components/product/Detail';
-import { extractCookie } from '@/utils/common';
-import { jwtDecode } from 'jwt-decode';
+import { checkTokenExist } from '@/utils/common';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const { id } = context.query;
 	const cookies = context.req.headers.cookie;
-	const accessToken = extractCookie(cookies);
-	const user: any = jwtDecode(accessToken) || null;
+	const customer = checkTokenExist(cookies);
 	return {
-		props: { id, user }
+		props: { id, user: customer }
 	};
 }
 

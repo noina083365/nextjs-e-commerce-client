@@ -62,10 +62,10 @@ const EditProduct = ({ id }: { id: string }) => {
 					</label>
 					<input
 						type="text"
-						name="title"
-						id="title"
+						name="name"
+						id="name"
 						required
-						value={productData.title}
+						value={productData.name}
 						onChange={handleChange}
 						className="mt-1 block w-full rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
 					/>

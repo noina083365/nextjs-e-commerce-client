@@ -3,18 +3,21 @@ export type Product = {
 	name: string;
 	description: string;
 	price: number;
+	stock: number;
 	createdAt: Date;
 	updatedAt: Date;
 };
 
 export const resetProductCreateForm = {
-	title: '',
+	name: '',
 	description: '',
 	price: 0,
+	stock: 0,
 };
 
 export type createProductInput = {
-	title: string;
+	name: string;
 	description: string;
 	price: number;
+	stock: number;
 };

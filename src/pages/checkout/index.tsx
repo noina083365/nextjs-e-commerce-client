@@ -5,7 +5,6 @@ import { GetServerSidePropsContext } from 'next';
 export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const cookies = context.req.headers.cookie;
 	const customer = checkTokenExist(cookies);
-	// const { cusId, productId } = context.query;
 	return {
 		props: {
 			user: customer,
@@ -15,7 +14,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 export default function Home({ user, productId }: any) {
-	console.log(user, productId);
 	return (
 		<Checkout token={user} productId={productId} />
 	);

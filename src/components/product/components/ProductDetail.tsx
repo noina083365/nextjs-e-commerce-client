@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Card from '@mui/material/Card';
-// import { useRouter } from 'next/navigation';
 import { useRouter } from 'next/router'
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';

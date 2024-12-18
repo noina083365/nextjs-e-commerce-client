@@ -9,12 +9,12 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 const addresses = ['1 MUI Drive', 'Reactville', 'Anytown', '99999', 'USA'];
-const payments = [
-  { name: 'Card type:', detail: 'Visa' },
-  { name: 'Card holder:', detail: 'Mr. John Smith' },
-  { name: 'Card number:', detail: 'xxxx-xxxx-xxxx-1234' },
-  { name: 'Expiry date:', detail: '04/2024' },
-];
+// const payments = [
+//   { name: 'Card type:', detail: 'Visa' },
+//   { name: 'Card holder:', detail: 'Mr. John Smith' },
+//   { name: 'Card number:', detail: 'xxxx-xxxx-xxxx-1234' },
+//   { name: 'Expiry date:', detail: '04/2024' },
+// ];
 
 export default function Review() {
   return (
@@ -53,9 +53,9 @@ export default function Review() {
         </div>
         <div>
           <Typography variant="subtitle2" gutterBottom>
-            Payment details
+            Payment details: <strong>Cash on delivery</strong>
           </Typography>
-          <Grid container>
+          {/* <Grid container>
             {payments.map((payment) => (
               <React.Fragment key={payment.name}>
                 <Stack
@@ -71,7 +71,7 @@ export default function Review() {
                 </Stack>
               </React.Fragment>
             ))}
-          </Grid>
+          </Grid> */}
         </div>
       </Stack>
     </Stack>

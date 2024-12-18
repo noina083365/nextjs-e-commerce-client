@@ -9,6 +9,6 @@
 		"@next/next/no-head-element": "warn",
 		"react/display-name": "warn",
 		"@typescript-eslint/ban-ts-comment": "warn",
-		"@typescript-eslint/no-empty-object-type": "warn",
+		"@typescript-eslint/no-empty-object-type": "warn"
 	}
 }

@@ -33,7 +33,7 @@ function getStepContent(step: number) {
       throw new Error('Unknown step');
   }
 }
-export default function Checkout(props: { disableCustomTheme?: boolean }) {
+export default function Checkout({ productId, user }: any, props: { disableCustomTheme?: boolean }) {
   const [activeStep, setActiveStep] = React.useState(0);
   const handleNext = () => {
     setActiveStep(activeStep + 1);
@@ -41,6 +41,41 @@ export default function Checkout(props: { disableCustomTheme?: boolean }) {
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
+
+  const checkBuyNow = async () => {
+    if (user && productId) {
+      // const order = {
+      //   customerId: user.id,
+      //   items: [{ ..._.pick(product, ['id', 'quantity', 'price']) }],
+      //   total_price: product.price ? +product.price : 0
+      // };
+
+      try {
+        // const result: any = await store.dispatch(createOrder(product));
+        // console.log(result);
+
+        // if (result && result.type && result.type.endsWith('/fulfilled')) {
+        //   alert('Order create successfully.');
+        //   router.push('/checkout');
+        // } else {
+        //   const message = result.message ? result.message : result.payload.message;
+        //   alert(message || 'An error occurred.');
+        // }
+      } catch (error: any) {
+        console.log(error);
+        // const newErrors: any = {};
+        // if (error.inner) {
+        //   error.inner.forEach((err: any) => {
+        //     newErrors[err.path] = err.message;
+        //   });
+        //   setErrors(newErrors);
+        // }
+      }
+    } else {
+      // router.push('/sign-in');
+    }
+  }
+
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />

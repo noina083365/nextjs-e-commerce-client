@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Card from '@mui/material/Card';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router'
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -18,19 +19,31 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { useCart } from "@/contexts/CartContext";
+import { useCart } from '@/contexts/CartContext';
 import _ from 'lodash';
 
 export default function ProductDetail({ id, user }: any) {
   const dispatch = useDispatch();
   const product = useSelector((state: { product: ProductState }) => state.product.currentProduct);
   const { addToCart, cart, totalPrice } = useCart();
+  const [errors, setErrors] = useState<any>(null);
   const router = useRouter();
   const theme = useTheme();
 
   useEffect(() => {
     store.dispatch(fetchProduct(id));
   }, [dispatch]);
+
+  const checkBuyNow = async () => {
+    if (user && id) {
+      router.push({
+        pathname: '/checkout',
+        query: { productId: id },
+      });
+    } else {
+      router.push('/sign-in');
+    }
+  }
 
   const checkAddToCart = async () => {
     if (user) {
@@ -102,7 +115,15 @@ export default function ProductDetail({ id, user }: any) {
             {product.price}
           </Typography>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }} gap={1}>
-            <Button variant="contained" color="primary" sx={{ flex: 1 }} startIcon={<AttachMoneyIcon />}>Buy Now</Button>
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ flex: 1 }}
+              startIcon={<AttachMoneyIcon />}
+              onClick={checkBuyNow}
+            >
+              Buy Now
+            </Button>
             <Button
               variant="contained"
               color="secondary"

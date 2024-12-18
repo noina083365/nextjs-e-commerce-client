@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -19,36 +19,66 @@ import PaymentForm from './components/PaymentForm';
 import Review from './components/Review';
 import AppTheme from '../shared-theme/AppTheme';
 import ColorModeIconDropdown from '../shared-theme/ColorModeIconDropdown';
+import { useDispatch, useSelector } from 'react-redux';
+import { ProductState } from '@/types/interfaces';
+import { useRouter } from 'next/router';
+import { store } from '@/redux/store';
+import { fetchProduct } from '@/redux/reducers/productSlice';
+import _ from 'lodash';
 
-const steps = ['Shipping address', 'Payment details', 'Review your order'];
+const steps = ['Shipping address', 'Review your order']; // 'Payment details' => change to Cash on delivery
 function getStepContent(step: number) {
   switch (step) {
     case 0:
       return <AddressForm />;
+    // case 1:
+    //   return <PaymentForm />;
     case 1:
-      return <PaymentForm />;
-    case 2:
       return <Review />;
     default:
       throw new Error('Unknown step');
   }
 }
-export default function Checkout({ productId, user }: any, props: { disableCustomTheme?: boolean }) {
+
+export default function Checkout({ user, productId }: any, props: { disableCustomTheme?: boolean }) {
   const [activeStep, setActiveStep] = React.useState(0);
+  const dispatch = useDispatch();
+  const product = useSelector((state: { product: ProductState }) => state.product.currentProduct);
+  const router = useRouter();
+  // const theme = useTheme();
+
+  useEffect(() => {
+    store.dispatch(fetchProduct(productId));
+  }, [dispatch]);
+
   const handleNext = () => {
-    setActiveStep(activeStep + 1);
+    const currentState = activeStep + 1;
+    setActiveStep(currentState);
+    processStep(currentState);
   };
+
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
 
-  const checkBuyNow = async () => {
+  const processStep = (currentStep: number) => {
+    console.log(currentStep);
+    if (currentStep === 1) {
+      console.log('Shipping address...');
+    } else if (currentStep === 2) {
+      checkOut();
+    }
+  }
+
+  const checkOut = async () => {
+    console.log('Checkout...');
     if (user && productId) {
-      // const order = {
-      //   customerId: user.id,
-      //   items: [{ ..._.pick(product, ['id', 'quantity', 'price']) }],
-      //   total_price: product.price ? +product.price : 0
-      // };
+      const order = {
+        customerId: user.id,
+        items: [{ ..._.pick(product, ['id', 'quantity', 'price']) }],
+        total_price: product.price ? +product.price : 0
+      };
+      console.log(order);
 
       try {
         // const result: any = await store.dispatch(createOrder(product));
@@ -95,47 +125,20 @@ export default function Checkout({ productId, user }: any, props: { disableCusto
             sm: 0,
           },
         }}
+      ><Grid
+        size={{ sm: 12, md: 7, lg: 8 }}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          maxWidth: '100%',
+          width: '100%',
+          backgroundColor: { xs: 'transparent', sm: 'background.default' },
+          alignItems: 'start',
+          pt: { xs: 0, sm: 16 },
+          px: { xs: 2, sm: 10 },
+          gap: { xs: 4, md: 8 },
+        }}
       >
-        <Grid
-          size={{ xs: 12, sm: 5, lg: 4 }}
-          sx={{
-            display: { xs: 'none', md: 'flex' },
-            flexDirection: 'column',
-            backgroundColor: 'background.paper',
-            borderRight: { sm: 'none', md: '1px solid' },
-            borderColor: { sm: 'none', md: 'divider' },
-            alignItems: 'start',
-            pt: 16,
-            px: 10,
-            gap: 4,
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              flexGrow: 1,
-              width: '100%',
-              maxWidth: 500,
-            }}
-          >
-            <Info totalPrice={activeStep >= 2 ? '$144.97' : '$134.98'} />
-          </Box>
-        </Grid>
-        <Grid
-          size={{ sm: 12, md: 7, lg: 8 }}
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            maxWidth: '100%',
-            width: '100%',
-            backgroundColor: { xs: 'transparent', sm: 'background.default' },
-            alignItems: 'start',
-            pt: { xs: 0, sm: 16 },
-            px: { xs: 2, sm: 10 },
-            gap: { xs: 4, md: 8 },
-          }}
-        >
           <Box
             sx={{
               display: 'flex',
@@ -184,10 +187,10 @@ export default function Checkout({ productId, user }: any, props: { disableCusto
                   Selected products
                 </Typography>
                 <Typography variant="body1">
-                  {activeStep >= 2 ? '$144.97' : '$134.98'}
+                  {product.price}
                 </Typography>
               </div>
-              <InfoMobile totalPrice={activeStep >= 2 ? '$144.97' : '$134.98'} />
+              <InfoMobile totalPrice={product.price} />
             </CardContent>
           </Card>
           <Box
@@ -292,6 +295,32 @@ export default function Checkout({ productId, user }: any, props: { disableCusto
                 </Box>
               </React.Fragment>
             )}
+          </Box>
+        </Grid>
+        <Grid
+          size={{ xs: 12, sm: 5, lg: 4 }}
+          sx={{
+            display: { xs: 'none', md: 'flex' },
+            flexDirection: 'column',
+            backgroundColor: 'background.paper',
+            borderRight: { sm: 'none', md: '1px solid' },
+            borderColor: { sm: 'none', md: 'divider' },
+            alignItems: 'start',
+            pt: 16,
+            px: 10,
+            gap: 4,
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              flexGrow: 1,
+              width: '100%',
+              maxWidth: 500,
+            }}
+          >
+            <Info products={[product]} totalPrice={product.price} />
           </Box>
         </Grid>
       </Grid>

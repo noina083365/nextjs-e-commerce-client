@@ -10,8 +10,8 @@ export async function POST(req: NextRequest) {
 		const { username, password } = await req.json();
 
 		const api = `${process.env.NEXT_PUBLIC_API}/api/auth/customer-login`;
-		const response = await axios.post(api, { username, password });
-		const token = response.data?.accessToken;
+		const response = await axios.post(api, { username, password }).catch(() => {});
+		const token = response?.data?.accessToken;
 
 		if (!token) {
 			return Response.json({ message: 'Authenticate failed' }, { status: 401 });
@@ -31,7 +31,6 @@ export async function POST(req: NextRequest) {
 		});
 		return Response.json({ message: 'Authenticate successful', user }, { status: 200 });
 	} catch (error: any) {
-		console.log(error.message);
 		const message = error.message ? error.message : 'Internal Server Error.';
 		return Response.json({ message }, { status: 500 });
 	}

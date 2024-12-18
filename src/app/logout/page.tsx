@@ -12,6 +12,7 @@ export default function Logout() {
 
 	useEffect(() => {
 		store.dispatch(createLogout());
+		localStorage.removeItem('customerId');
 		router.push('/');
 	}, [dispatch]);
 

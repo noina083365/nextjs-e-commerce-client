@@ -7,14 +7,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const customer = checkTokenExist(cookies);
 	return {
 		props: {
-			user: customer,
+			userId: customer.id,
 			...context.query
 		},
 	};
 }
 
-export default function Home({ user, productId }: any) {
+export default function Home({ userId, productId }: any) {
 	return (
-		<Checkout token={user} productId={productId} />
+		<Checkout userId={userId} productId={productId} />
 	);
 }

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -25,23 +25,13 @@ import { useRouter } from 'next/router';
 import { store } from '@/redux/store';
 import { fetchProduct } from '@/redux/reducers/productSlice';
 import _ from 'lodash';
+import { createOrder } from '@/redux/reducers/orderSlice';
 
 const steps = ['Shipping address', 'Review your order']; // 'Payment details' => change to Cash on delivery
-function getStepContent(step: number) {
-  switch (step) {
-    case 0:
-      return <AddressForm />;
-    // case 1:
-    //   return <PaymentForm />;
-    case 1:
-      return <Review />;
-    default:
-      throw new Error('Unknown step');
-  }
-}
 
-export default function Checkout({ user, productId }: any, props: { disableCustomTheme?: boolean }) {
+export default function Checkout({ userId, productId }: any, props: { disableCustomTheme?: boolean }) {
   const [activeStep, setActiveStep] = React.useState(0);
+  const [formData, setFormData] = useState(null);
   const dispatch = useDispatch();
   const product = useSelector((state: { product: ProductState }) => state.product.currentProduct);
   const router = useRouter();
@@ -62,26 +52,35 @@ export default function Checkout({ user, productId }: any, props: { disableCusto
   };
 
   const processStep = (currentStep: number) => {
-    console.log(currentStep);
     if (currentStep === 1) {
       console.log('Shipping address...');
+      // store address ?
+      const formElement = document.getElementById('address_form') as HTMLFormElement;
+      if (formElement) {
+        formElement.requestSubmit();
+      }
     } else if (currentStep === 2) {
       checkOut();
     }
   }
 
+  const handleFormData = (data: any) => {
+    setFormData(data);
+    console.log('Form Data Received in Parent:', data);
+  };
+
   const checkOut = async () => {
     console.log('Checkout...');
-    if (user && productId) {
+    if (userId && productId) {
       const order = {
-        customerId: user.id,
+        customerId: userId,
         items: [{ ..._.pick(product, ['id', 'quantity', 'price']) }],
         total_price: product.price ? +product.price : 0
       };
       console.log(order);
 
       try {
-        // const result: any = await store.dispatch(createOrder(product));
+        // const result: any = await store.dispatch(createOrder(order));
         // console.log(result);
 
         // if (result && result.type && result.type.endsWith('/fulfilled')) {
@@ -190,7 +189,7 @@ export default function Checkout({ user, productId }: any, props: { disableCusto
                   {product.price}
                 </Typography>
               </div>
-              <InfoMobile totalPrice={product.price} />
+              <InfoMobile products={[product]}totalPrice={product.price} />
             </CardContent>
           </Card>
           <Box
@@ -245,7 +244,15 @@ export default function Checkout({ user, productId }: any, props: { disableCusto
               </Stack>
             ) : (
               <React.Fragment>
-                {getStepContent(activeStep)}
+                {
+                  (activeStep === 0) ? (
+                    <AddressForm onFormSubmit={handleFormData} />
+                  ) :
+                    (activeStep === 1) && (
+                      // <PaymentForm />
+                      <Review />
+                    )
+                }
                 <Box
                   sx={[
                     {

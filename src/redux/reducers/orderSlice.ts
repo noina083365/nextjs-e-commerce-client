@@ -21,7 +21,7 @@ const apiUrl = process.env.NEXT_PUBLIC_API;
 
 export const createOrder = createAsyncThunk('orders/createOrder', async (orderData: any) => {
   const api = `${apiUrl}/api/orders`;
-  const response = await axios.get(api).catch((err) => console.log(err));
+  const response = await axios.post(api, orderData).catch((err) => console.log(err));
   return response && response.data ? response.data : null;
 });
 

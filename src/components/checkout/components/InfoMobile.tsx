@@ -9,12 +9,14 @@ import CloseIcon from '@mui/icons-material/Close';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 
 import Info from './Info';
+import { Product } from '@/types/product';
 
 interface InfoProps {
+  products: Product[];
   totalPrice: string;
 }
 
-export default function InfoMobile({ totalPrice }: InfoProps) {
+export default function InfoMobile({ products, totalPrice }: InfoProps) {
   const [open, setOpen] = React.useState(false);
 
   const toggleDrawer = (newOpen: boolean) => () => {
@@ -29,7 +31,7 @@ export default function InfoMobile({ totalPrice }: InfoProps) {
       >
         <CloseIcon />
       </IconButton>
-      <Info totalPrice={totalPrice} />
+      <Info products={products} totalPrice={totalPrice} />
     </Box>
   );
 

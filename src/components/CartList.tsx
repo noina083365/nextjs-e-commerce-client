@@ -7,13 +7,19 @@ import Footer from '@/components/shared-theme/Footer';
 import Divider from '@mui/material/Divider';
 import { Button, List, ListItem } from '@mui/material';
 
-export default function CartList({ user }: any, props: { disableCustomTheme?: boolean }) {
+export default function CartList({ userId }: any, props: { disableCustomTheme?: boolean }) {
   const { cart, removeFromCart, clearCart, totalPrice } = useCart();
+  const onCheckout = () => {
+    // router.push({
+    //   pathname: '/checkout',
+    //   query: { productId: id },
+    // });
+  }
 
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
-      <AppAppBar user={user} />
+      <AppAppBar userId={userId} />
       <div className="cart-area">
         <h2>Cart</h2>
         {
@@ -31,6 +37,7 @@ export default function CartList({ user }: any, props: { disableCustomTheme?: bo
                 }
               </List>
               <p>Total price: ${totalPrice}</p>
+              <Button onClick={onCheckout}>Checkout</Button>
               <Button onClick={clearCart}>Clear Cart</Button>
             </>
           )

@@ -6,12 +6,12 @@ import Footer from '@/components/shared-theme/Footer';
 import Products from './components/Products';
 import Divider from '@mui/material/Divider';
 
-export default function ProductPage({ user }: any, props: { disableCustomTheme?: boolean }) {
+export default function ProductPage({ userId }: any, props: { disableCustomTheme?: boolean }) {
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
 
-      <AppAppBar user={user} />
+      <AppAppBar userId={userId} />
       <div>
         <Products />
         <Divider />

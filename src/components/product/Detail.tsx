@@ -6,14 +6,14 @@ import Footer from '@/components/shared-theme/Footer';
 import ProductDetail from './components/ProductDetail';
 import Divider from '@mui/material/Divider';
 
-export default function DetailPage({ id, user }: any, props: { disableCustomTheme?: boolean }) {
+export default function DetailPage({ id, userId }: any, props: { disableCustomTheme?: boolean }) {
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
 
-      <AppAppBar user={user} />
+      <AppAppBar userId={userId} />
       <div>
-        <ProductDetail id={id} user={user} />
+        <ProductDetail id={id} userId={userId} />
         <Divider />
         <Footer />
       </div>

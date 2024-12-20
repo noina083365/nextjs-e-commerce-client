@@ -18,12 +18,12 @@ import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 import Link from 'next/link';
 
-export default function AppAppBar({ user }: any) {
+export default function AppAppBar({ userId }: any) {
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
 
-  if (typeof window !== 'undefined' && user?.id) {
-    localStorage.setItem('customerId', user?.id);
+  if (typeof window !== 'undefined' && userId) {
+    localStorage.setItem('customerId', userId);
   }
   // TODO: redux get total product in cart to show badge
 
@@ -63,7 +63,7 @@ export default function AppAppBar({ user }: any) {
             }}
           >
             {
-              user?.id ?
+              userId ?
                 (
                   <Button
                     color="primary"
@@ -123,7 +123,7 @@ export default function AppAppBar({ user }: any) {
                 <MenuItem>Blog</MenuItem>
                 <Divider sx={{ my: 3 }} />
                 {
-                  user?.id ?
+                  userId ?
                     (
                       <MenuItem>
                         <Link href={`/logout`}>Logout</Link>

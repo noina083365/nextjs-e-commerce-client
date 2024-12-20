@@ -7,13 +7,13 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const customer = checkTokenExist(cookies);
 	return {
 		props: {
-			user: customer,
+			userId: customer?.id || 0,
 		},
 	};
 }
 
-export default function Home({ user }: any) {
+export default function Home({ userId }: any) {
 	return (
-		<CartList token={user} />
+		<CartList token={userId} />
 	);
 }

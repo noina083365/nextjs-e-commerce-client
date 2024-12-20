@@ -21,7 +21,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { useCart } from '@/contexts/CartContext';
 import _ from 'lodash';
 
-export default function ProductDetail({ id, user }: any) {
+export default function ProductDetail({ id, userId }: any) {
   const dispatch = useDispatch();
   const product = useSelector((state: { product: ProductState }) => state.product.currentProduct);
   const { addToCart, cart, totalPrice } = useCart();
@@ -34,7 +34,7 @@ export default function ProductDetail({ id, user }: any) {
   }, [dispatch]);
 
   const checkBuyNow = async () => {
-    if (user && id) {
+    if (userId && id) {
       router.push({
         pathname: '/checkout',
         query: { productId: id },
@@ -45,7 +45,7 @@ export default function ProductDetail({ id, user }: any) {
   }
 
   const checkAddToCart = async () => {
-    if (user) {
+    if (userId) {
       addToCart({ ...product, quantity: 1 });
     } else {
       router.push('/sign-in');
@@ -77,7 +77,7 @@ export default function ProductDetail({ id, user }: any) {
           </div>
         </Box>
         <Box sx={{ width: { xs: '50%', sm: '40', md: '35%', xl: '30%' } }}>
-          <Card>
+          {/* <Card>
             <Typography>
               <Link href={`/cart`} className="flex"><ShoppingCartRoundedIcon />Cart</Link>
             </Typography>
@@ -92,7 +92,7 @@ export default function ProductDetail({ id, user }: any) {
             </List>
             <p>Total price: ${totalPrice}</p>
           </Card>
-          <Divider />
+          <Divider /> */}
           <Typography
             component="h2"
             variant="h4"

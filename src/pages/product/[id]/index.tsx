@@ -8,13 +8,13 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const cookies = context.req.headers.cookie;
 	const customer = checkTokenExist(cookies);
 	return {
-		props: { id, user: customer }
+		props: { id, userId: customer?.id || 0 }
 	};
 }
 
-const Detail = ({ id, user }: any) => {
+const Detail = ({ id, userId }: any) => {
 	return (
-		<DetailPage id={id} user={user} />
+		<DetailPage id={id} userId={userId} />
 	);
 };
 

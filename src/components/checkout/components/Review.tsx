@@ -1,14 +1,13 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 
 import Divider from '@mui/material/Divider';
-import Grid from '@mui/material/Grid';
+// import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-const addresses = ['1 MUI Drive', 'Reactville', 'Anytown', '99999', 'USA'];
 // const payments = [
 //   { name: 'Card type:', detail: 'Visa' },
 //   { name: 'Card holder:', detail: 'Mr. John Smith' },
@@ -16,22 +15,25 @@ const addresses = ['1 MUI Drive', 'Reactville', 'Anytown', '99999', 'USA'];
 //   { name: 'Expiry date:', detail: '04/2024' },
 // ];
 
-export default function Review() {
+export default function Review({ products, formData }: any) {
+  const [product, setProduct] = useState(products[0]);
+  console.log('=== formData ===');
+  console.log(formData);
   return (
     <Stack spacing={2}>
       <List disablePadding>
         <ListItem sx={{ py: 1, px: 0 }}>
           <ListItemText primary="Products" secondary="4 selected" />
-          <Typography variant="body2">$134.98</Typography>
+          <Typography variant="body2">฿{product.price}</Typography>
         </ListItem>
         <ListItem sx={{ py: 1, px: 0 }}>
           <ListItemText primary="Shipping" secondary="Plus taxes" />
-          <Typography variant="body2">$9.99</Typography>
+          <Typography variant="body2">฿{`25`}</Typography>
         </ListItem>
         <ListItem sx={{ py: 1, px: 0 }}>
           <ListItemText primary="Total" />
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            $144.97
+          ฿{parseFloat(product.price) + 25}
           </Typography>
         </ListItem>
       </List>
@@ -46,9 +48,9 @@ export default function Review() {
           <Typography variant="subtitle2" gutterBottom>
             Shipment details
           </Typography>
-          <Typography gutterBottom>John Smith</Typography>
+          <Typography gutterBottom>{formData.firstName} {formData.lastName}</Typography>
           <Typography gutterBottom sx={{ color: 'text.secondary' }}>
-            {addresses.join(', ')}
+            {formData.address1} {formData.address2}
           </Typography>
         </div>
         <div>

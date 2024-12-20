@@ -53,8 +53,6 @@ export default function Checkout({ userId, productId }: any, props: { disableCus
 
   const processStep = (currentStep: number) => {
     if (currentStep === 1) {
-      console.log('Shipping address...');
-      // store address ?
       const formElement = document.getElementById('address_form') as HTMLFormElement;
       if (formElement) {
         formElement.requestSubmit();
@@ -66,7 +64,7 @@ export default function Checkout({ userId, productId }: any, props: { disableCus
 
   const handleFormData = (data: any) => {
     setFormData(data);
-    console.log('Form Data Received in Parent:', data);
+    // send data to next step
   };
 
   const checkOut = async () => {
@@ -250,7 +248,7 @@ export default function Checkout({ userId, productId }: any, props: { disableCus
                   ) :
                     (activeStep === 1) && (
                       // <PaymentForm />
-                      <Review />
+                      <Review  products={[product]} formData={formData} />
                     )
                 }
                 <Box

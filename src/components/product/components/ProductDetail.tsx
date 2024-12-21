@@ -37,7 +37,7 @@ export default function ProductDetail({ id, userId }: any) {
     if (userId && id) {
       router.push({
         pathname: '/checkout',
-        query: { productId: id },
+        query: { source: 'buy-now', productId: id },
       });
     } else {
       router.push('/sign-in');

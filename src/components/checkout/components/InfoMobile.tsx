@@ -9,10 +9,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 
 import Info from './Info';
-import { Product } from '@/types/product';
+import { CartItem } from '@/types/interfaces';
 
 interface InfoProps {
-  products: Product[];
+  products: CartItem[];
   totalPrice: string;
 }
 

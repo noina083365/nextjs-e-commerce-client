@@ -7,6 +7,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { CartItem } from '@/types/interfaces';
 
 // const payments = [
 //   { name: 'Card type:', detail: 'Visa' },
@@ -15,28 +16,33 @@ import Typography from '@mui/material/Typography';
 //   { name: 'Expiry date:', detail: '04/2024' },
 // ];
 
-export default function Review({ products, formData }: any) {
-  const [product, setProduct] = useState(products[0]);
-  console.log('=== formData ===');
-  console.log(formData);
+export default function Review({ products, totalPrice, shipPrice, formData }: any) {
   return (
     <Stack spacing={2}>
-      <List disablePadding>
-        <ListItem sx={{ py: 1, px: 0 }}>
-          <ListItemText primary="Products" secondary="4 selected" />
-          <Typography variant="body2">฿{product.price}</Typography>
-        </ListItem>
-        <ListItem sx={{ py: 1, px: 0 }}>
-          <ListItemText primary="Shipping" secondary="Plus taxes" />
-          <Typography variant="body2">฿{`25`}</Typography>
-        </ListItem>
-        <ListItem sx={{ py: 1, px: 0 }}>
-          <ListItemText primary="Total" />
-          <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-          ฿{parseFloat(product.price) + 25}
-          </Typography>
-        </ListItem>
-      </List>
+      {
+        products && products.length && (
+          <List disablePadding>
+            {
+              products.map((product: CartItem) => (
+                <ListItem key={`${product.id}-${product.name}`} sx={{ py: 1, px: 0, display: 'flex', justifyContent: 'space-between' }}>
+                  <ListItemText primary="Products" secondary={`${product.quantity} selected`} />
+                  <Typography variant="body2">฿{product.quantity * product.price}</Typography>
+                </ListItem>
+              ))
+            }
+            <ListItem sx={{ py: 1, px: 0 }}>
+              <ListItemText primary="Shipping" secondary="Plus taxes" />
+              <Typography variant="body2">฿{shipPrice}</Typography>
+            </ListItem>
+            <ListItem sx={{ py: 1, px: 0 }}>
+              <ListItemText primary="Total" />
+              <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+                ฿{parseFloat(`${totalPrice}`) + shipPrice}
+              </Typography>
+            </ListItem>
+          </List>
+        )
+      }
       <Divider />
       <Stack
         direction="column"

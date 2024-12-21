@@ -4,10 +4,10 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
-import { Product } from '@/types/product';
+import { CartItem } from '@/types/interfaces';
 
 interface InfoProps {
-  products: Product[];
+  products: CartItem[];
   totalPrice: string;
 }
 
@@ -22,14 +22,23 @@ export default function Info({ products, totalPrice }: InfoProps) {
       </Typography>
       <List disablePadding>
         {products.map((product) => (
-          <ListItem key={`${product.id}-${product.name}`} sx={{ py: 1, px: 0 }}>
-            <ListItemText
-              sx={{ mr: 2 }}
-              primary={product.name}
-              secondary={product.description}
-            />
-            <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
-              {product.price}
+          <ListItem key={`${product.id}-${product.name}`} sx={{
+            py: 1, px: 0,
+            display: { xs: 'none', sm: 'flex' },
+            justifyContent: 'space-between',
+            gap: 2,
+          }}>
+            <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
+              <ListItemText
+                sx={{ mr: 2 }}
+                primary={product.name}
+              />
+            </Typography>
+            <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
+              {product.quantity || 1} x {product.price}
+            </Typography>
+            <Typography variant="body2" sx={{ fontWeight: 'medium', textAlign: 'right' }}>
+              {(product.quantity || 1) * product.price}
             </Typography>
           </ListItem>
         ))}

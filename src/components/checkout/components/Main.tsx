@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import { useDispatch, useSelector } from 'react-redux';
-import { ProductState } from '@/types/interfaces';
+import { CartItem, ProductState } from '@/types/interfaces';
 import { useRouter } from 'next/router';
 import { store } from '@/redux/store';
 import { fetchProduct } from '@/redux/reducers/productSlice';
@@ -24,21 +24,40 @@ import InfoMobile from './InfoMobile';
 import AddressForm from './AddressForm';
 import Review from './Review';
 import Info from './Info';
+import { Product } from '@/types/product';
+import { useCart } from '@/contexts/CartContext';
 
 const steps = ['Shipping address', 'Review your order']; // 'Payment details' => change to Cash on delivery
 
-export default function MainCheckout({ userId, productId }: any, props: { disableCustomTheme?: boolean }) {
-
-  const [activeStep, setActiveStep] = React.useState(0);
+export default function MainCheckout({ userId, source, productId }: any, props: { disableCustomTheme?: boolean }) {
+  const [activeStep, setActiveStep] = useState(0);
   const [formData, setFormData] = useState(null);
+  const [products, setProducts] = useState<CartItem[]>([]);
+  const { cart, removeFromCart, clearCart, totalPrice: tPrice } = useCart();
+  const [totalPrice, setTotalPrice] = useState('0.00');
+  const [shipPrice, setShipPrice] = useState(25);
   const dispatch = useDispatch();
   const product = useSelector((state: { product: ProductState }) => state.product.currentProduct);
   const router = useRouter();
   // const theme = useTheme();
 
   useEffect(() => {
-    store.dispatch(fetchProduct(productId));
+    if (source === 'buy-now') {
+      store.dispatch(fetchProduct(productId));
+    }
   }, [dispatch]);
+
+  useEffect(() => {
+    setProducts([product]);
+    setTotalPrice(`${product.price}`);
+  }, [product]);
+
+  useEffect(() => {
+    if (source === 'cart') {
+      setProducts(cart);
+      setTotalPrice(`${tPrice}`);
+    }
+  }, [cart]);
 
   const handleNext = () => {
     const currentState = activeStep + 1;
@@ -63,19 +82,29 @@ export default function MainCheckout({ userId, productId }: any, props: { disabl
 
   const handleFormData = (data: any) => {
     setFormData(data);
-    // send data to next step
   };
 
   const checkOut = async () => {
     console.log('Checkout...');
-    if (userId && productId) {
-      const order = {
-        customerId: userId,
-        items: [{ ..._.pick(product, ['id', 'quantity', 'price']) }],
-        total_price: product.price ? +product.price : 0
-      };
+    console.log(userId, productId);
+    let order = {};
+    if (userId && products.length > 0) {
+      if (products && products.length > 0) {
+        const orderItems = [];
+        for (const product of products) {
+          orderItems.push({ ..._.pick(product, ['id', 'quantity', 'price']) });
+        }
+        order = {
+          customerId: userId,
+          items: orderItems,
+          total_price: parseFloat(totalPrice),
+          shipment: {
+            address: formData,
+            ship_price: shipPrice
+          }
+        }
+      }
       console.log(order);
-
       try {
         // const result: any = await store.dispatch(createOrder(order));
         // console.log(result);
@@ -112,10 +141,6 @@ export default function MainCheckout({ userId, productId }: any, props: { disabl
       <Grid
         container
         sx={{
-          height: {
-            xs: '100%',
-            sm: 'calc(100dvh - var(--template-frame-height, 0px))',
-          },
           mt: {
             xs: 4,
             sm: 0,
@@ -186,7 +211,7 @@ export default function MainCheckout({ userId, productId }: any, props: { disabl
                   {product.price}
                 </Typography>
               </div>
-              <InfoMobile products={[product]} totalPrice={product.price} />
+              <InfoMobile products={[product]} totalPrice={totalPrice} />
             </CardContent>
           </Card>
           <Box
@@ -247,7 +272,7 @@ export default function MainCheckout({ userId, productId }: any, props: { disabl
                   ) :
                     (activeStep === 1) && (
                       // <PaymentForm />
-                      <Review products={[product]} formData={formData} />
+                      <Review products={products} totalPrice={totalPrice} shipPrice={shipPrice} formData={formData} />
                     )
                 }
                 <Box
@@ -324,7 +349,7 @@ export default function MainCheckout({ userId, productId }: any, props: { disabl
               maxWidth: 500,
             }}
           >
-            <Info products={[product]} totalPrice={product.price} />
+            <Info products={products} totalPrice={totalPrice} />
           </Box>
         </Grid>
       </Grid>

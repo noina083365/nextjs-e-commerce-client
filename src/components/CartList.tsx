@@ -6,14 +6,15 @@ import AppAppBar from '@/components/shared-theme/AppAppBar';
 import Footer from '@/components/shared-theme/Footer';
 import Divider from '@mui/material/Divider';
 import { Button, List, ListItem } from '@mui/material';
+import router from 'next/router';
 
 export default function CartList({ userId }: any, props: { disableCustomTheme?: boolean }) {
   const { cart, removeFromCart, clearCart, totalPrice } = useCart();
   const onCheckout = () => {
-    // router.push({
-    //   pathname: '/checkout',
-    //   query: { productId: id },
-    // });
+    router.push({
+      pathname: '/checkout',
+      query: { source: 'cart' },
+    });
   }
 
   return (

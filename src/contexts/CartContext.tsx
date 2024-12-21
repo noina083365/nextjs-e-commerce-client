@@ -4,9 +4,8 @@ import React, { createContext, ReactNode, useContext, useEffect, useState } from
 import { store } from '@/redux/store';
 import { updateCart } from '@/redux/reducers/cartSlice';
 import _ from 'lodash';
-import axios from 'axios';
 import { CartContextType, CartItem } from '@/types/interfaces';
-import { fillInCart } from '@/utils/common';
+import { customerOpenCart, fillInCart } from '@/utils/common';
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
@@ -18,13 +17,7 @@ export const CartProvider = ({
   const [cart, setCart] = useState<CartItem[]>([]);
 
   const loadCustomerOpenCart = async () => {
-    const custId = localStorage.getItem('customerId');
-    const customerId = custId ? +custId : 0;
-    const apiUrl = process.env.NEXT_PUBLIC_API;
-    const api = `${apiUrl}/api/carts/customer/${customerId}`;
-    const response = await axios.get(api).catch((err) => console.log(err));
-    const productsInCart: CartItem[] = response?.data ? response?.data : [];
-
+    const productsInCart: CartItem[] = await customerOpenCart();
     if (productsInCart && productsInCart.length > 0) {
       productsInCart.map((product: CartItem) => {
         setCart((prevCart) => [...prevCart, { ...product }]);
@@ -68,6 +61,7 @@ export const CartProvider = ({
 
   const clearCart = () => {
     setCart([]);
+    // TODO: update DB
   }
 
   const totalPrice = cart.reduce(

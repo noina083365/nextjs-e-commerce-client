@@ -1,4 +1,5 @@
 import { CartItem } from "@/types/interfaces";
+import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
 export const extractCookie = (cookies: string | undefined, key: string) => {
@@ -35,4 +36,15 @@ export const checkTokenExist = (cookies: any) => {
     customer = jwtDecode(accessToken) || null;
   }
   return customer;
+}
+
+export const customerOpenCart = async () => {
+  const custId = localStorage.getItem('customerId');
+  const customerId = custId ? +custId : 0;
+  const apiUrl = process.env.NEXT_PUBLIC_API;
+  const api = `${apiUrl}/api/carts/customer/${customerId}`;
+  const response = await axios.get(api).catch((err) => console.log(err));
+  const productsInCart: CartItem[] = response?.data ? response?.data : [];
+  console.log(productsInCart);
+  return productsInCart;
 }

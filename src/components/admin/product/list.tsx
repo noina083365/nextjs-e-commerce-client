@@ -36,14 +36,12 @@ const ProductList = () => {
 				</Link>
 			</div>
 			<div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-				<table className="min-w-full divide-y divide-gray-200">
+				<table className='w-full'>
 					<thead>
 						<tr>
-							<th
-								scope="col"
-								className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-								Title
-							</th>
+							<th>Name</th>
+							<th>Price</th>
+							<th>Stock</th>
 							<th
 								scope="col"
 								className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -52,23 +50,29 @@ const ProductList = () => {
 						</tr>
 					</thead>
 					<tbody className="bg-white text-xs divide-y divide-gray-200">
-						{products.map((product: Product) => (
-							<tr key={product.id}>
-								<td className="px-6 py-4 whitespace-wrap">
-									<div className="font-medium text-gray-900">{product.name}</div>
-								</td>
-								<td className="px-6 py-4 whitespace-wrap">
-									<Link className="text-indigo-600 mr-2" href={`/admin/product/edit/${product.id}`}>
-										Edit
-									</Link>
-									<button
-										onClick={() => handleDelete(product.id)}
-										className="text-red-600 hover:text-red-900">
-										Delete
-									</button>
-								</td>
-							</tr>
-						))}
+						{
+							products.map((product: Product) => (
+								<tr key={product.id}>
+									<td>{product.name}</td>
+									<td>{product.price}</td>
+									<td className="px-6 py-4 whitespace-wrap">
+										<div className="font-medium text-gray-900">{product.stock}</div>
+									</td>
+									<td>
+										<div className="flex justify-around px-6 py-4 whitespace-wrap">
+											<Link className="text-indigo-600 mr-2" href={`/admin/product/edit/${product.id}`}>
+												Edit
+											</Link>
+											<button
+												onClick={() => handleDelete(product.id)}
+												className="text-red-600 hover:text-red-900">
+												Delete
+											</button>
+										</div>
+									</td>
+								</tr>
+							))
+						}
 					</tbody>
 				</table>
 			</div>

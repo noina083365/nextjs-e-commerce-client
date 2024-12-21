@@ -45,6 +45,18 @@ a {
 	display: flex;
 }
 
+.justify-center {
+	justify-content: center;
+}
+
+.justify-between {
+	justify-content: space-between;
+}
+
+.justify-around {
+	justify-content: space-around;
+}
+
 .items-center {
 	align-items: center;
 }

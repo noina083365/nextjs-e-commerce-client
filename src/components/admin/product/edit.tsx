@@ -6,13 +6,13 @@ import { store } from '@/redux/store';
 import { editProduct, fetchProduct } from '@/redux/reducers/productSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { ProductState } from '@/types/interfaces';
-import { resetProductCreateForm } from '@/types/product';
+import { Product, resetProductCreateForm } from '@/types/product';
 import Link from 'next/link';
 
-const EditProduct = ({ id }: { id: string }) => {
+const EditProduct = ({ id, userId }: any) => {
 	const dispatch = useDispatch();
 	const currentProduct = useSelector((state: { product: ProductState }) => state.product.currentProduct);
-	const [productData, setProductData] = useState<any>(resetProductCreateForm);
+	const [productData, setProductData] = useState<Product>(resetProductCreateForm);
 	const router = useRouter();
 
 	useEffect(() => {
@@ -26,16 +26,17 @@ const EditProduct = ({ id }: { id: string }) => {
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 
-		const { title, details, categoryId } = productData;
+		const { name, description, price, stock } = productData;
 		let result: any = {};
 
-		const user = {
+		const product = {
 			id,
-			title,
-			details,
-			categoryId,
+			name,
+			description,
+			price: parseFloat(`${price}`),
+			stock: parseFloat(`${stock}`),
 		};
-		result = await store.dispatch(editProduct(user));
+		result = await store.dispatch(editProduct(product));
 
 		if (result.success || result.type?.endsWith('/fulfilled')) {
 			alert('User saved successfully.');
@@ -57,8 +58,8 @@ const EditProduct = ({ id }: { id: string }) => {
 			</div>
 			<form onSubmit={handleSubmit} className="space-y-6">
 				<div>
-					<label htmlFor="title" className="block text-sm font-medium text-gray-700">
-						Title
+					<label htmlFor="name" className="block text-sm font-medium text-gray-700">
+						Name
 					</label>
 					<input
 						type="text"
@@ -71,15 +72,29 @@ const EditProduct = ({ id }: { id: string }) => {
 					/>
 				</div>
 				<div>
-					<label htmlFor="details" className="block text-sm font-medium text-gray-700">
-						Details
+					<label htmlFor="price" className="block text-sm font-medium text-gray-700">
+						Price
 					</label>
 					<input
 						type="text"
-						name="details"
-						id="details"
+						name="price"
+						id="price"
 						required
-						value={productData.details}
+						value={productData.price}
+						onChange={handleChange}
+						className="mt-1 block w-full rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+					/>
+				</div>
+				<div>
+					<label htmlFor="stock" className="block text-sm font-medium text-gray-700">
+						Stock
+					</label>
+					<input
+						type="text"
+						name="stock"
+						id="stock"
+						required
+						value={productData.stock}
 						onChange={handleChange}
 						className="mt-1 block w-full rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
 					/>

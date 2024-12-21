@@ -45,7 +45,7 @@ export const createProduct = createAsyncThunk('products/createProduct', async (d
 
 export const editProduct = createAsyncThunk('products/editProduct', async (data: any) => {
 	const api = `${apiUrl}/api/products/${data.id}`;
-	const response = await axios.patch(api, { name: data.name });
+	const response = await axios.patch(api, data);
 	return response.data;
 });
 

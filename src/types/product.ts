@@ -9,10 +9,13 @@ export type Product = {
 };
 
 export const resetProductCreateForm = {
+	id: '0',
 	name: '',
 	description: '',
 	price: 0,
 	stock: 0,
+	createdAt: new Date(),
+	updatedAt: new Date(),
 };
 
 export type createProductInput = {

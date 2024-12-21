@@ -77,11 +77,11 @@ export default function SignUpCustomerPage(props: { disableCustomTheme?: boolean
   const validateInputs = () => {
     const email = document.getElementById('username') as HTMLInputElement;
     const password = document.getElementById('password') as HTMLInputElement;
-    const name = document.getElementById('name') as HTMLInputElement;
+    // const name = document.getElementById('name') as HTMLInputElement;
 
     let isValid = true;
 
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
+    if (!email.value) { // || !/\S+@\S+\.\S+/.test(email.value)) {
       setEmailError(true);
       setEmailErrorMessage('Please enter a valid email address.');
       isValid = false;
@@ -99,20 +99,21 @@ export default function SignUpCustomerPage(props: { disableCustomTheme?: boolean
       setPasswordErrorMessage('');
     }
 
-    if (!name.value || name.value.length < 1) {
-      setNameError(true);
-      setNameErrorMessage('Name is required.');
-      isValid = false;
-    } else {
-      setNameError(false);
-      setNameErrorMessage('');
-    }
+    // if (!name.value || name.value.length < 1) {
+    //   setNameError(true);
+    //   setNameErrorMessage('Name is required.');
+    //   isValid = false;
+    // } else {
+    //   setNameError(false);
+    //   setNameErrorMessage('');
+    // }
 
     return isValid;
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    console.log(nameError, emailError, passwordError);
     if (nameError || emailError || passwordError) {
       return;
     }

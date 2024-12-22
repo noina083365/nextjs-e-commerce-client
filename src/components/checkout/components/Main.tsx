@@ -24,8 +24,9 @@ import InfoMobile from './InfoMobile';
 import AddressForm from './AddressForm';
 import Review from './Review';
 import Info from './Info';
-import { Product } from '@/types/product';
 import { useCart } from '@/contexts/CartContext';
+import { createOrder } from '@/redux/reducers/orderSlice';
+import { useTheme } from '@emotion/react';
 
 const steps = ['Shipping address', 'Review your order']; // 'Payment details' => change to Cash on delivery
 
@@ -39,7 +40,7 @@ export default function MainCheckout({ userId, source, productId }: any, props: 
   const dispatch = useDispatch();
   const product = useSelector((state: { product: ProductState }) => state.product.currentProduct);
   const router = useRouter();
-  // const theme = useTheme();
+  const theme = useTheme();
 
   useEffect(() => {
     if (source === 'buy-now') {
@@ -48,7 +49,7 @@ export default function MainCheckout({ userId, source, productId }: any, props: 
   }, [dispatch]);
 
   useEffect(() => {
-    setProducts([product]);
+    setProducts([{ ...product, quantity: 1 }]);
     setTotalPrice(`${product.price}`);
   }, [product]);
 
@@ -85,8 +86,6 @@ export default function MainCheckout({ userId, source, productId }: any, props: 
   };
 
   const checkOut = async () => {
-    console.log('Checkout...');
-    console.log(userId, productId);
     let order = {};
     if (userId && products.length > 0) {
       if (products && products.length > 0) {
@@ -103,31 +102,25 @@ export default function MainCheckout({ userId, source, productId }: any, props: 
             ship_price: shipPrice
           }
         }
-      }
-      console.log(order);
-      try {
-        // const result: any = await store.dispatch(createOrder(order));
-        // console.log(result);
-
-        // if (result && result.type && result.type.endsWith('/fulfilled')) {
-        //   alert('Order create successfully.');
-        //   router.push('/checkout');
-        // } else {
-        //   const message = result.message ? result.message : result.payload.message;
-        //   alert(message || 'An error occurred.');
+        // if (source === 'cart') {
+        //   // send cartId in request
         // }
+      }
+      try {
+        const result: any = await store.dispatch(createOrder(order));
+        console.log(result);
+
+        if (result && result.type && result.type.endsWith('/fulfilled')) {
+          alert('Order create successfully.');
+        } else {
+          const message = result.message ? result.message : result.payload.message;
+          alert(message || 'An error occurred.');
+        }
       } catch (error: any) {
         console.log(error);
-        // const newErrors: any = {};
-        // if (error.inner) {
-        //   error.inner.forEach((err: any) => {
-        //     newErrors[err.path] = err.message;
-        //   });
-        //   setErrors(newErrors);
-        // }
       }
     } else {
-      // router.push('/sign-in');
+      router.push('/sign-in');
     }
   }
 

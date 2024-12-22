@@ -26,7 +26,7 @@ export default function Review({ products, totalPrice, shipPrice, formData }: an
               products.map((product: CartItem) => (
                 <ListItem key={`${product.id}-${product.name}`} sx={{ py: 1, px: 0, display: 'flex', justifyContent: 'space-between' }}>
                   <ListItemText primary="Products" secondary={`${product.quantity} selected`} />
-                  <Typography variant="body2">฿{product.quantity * product.price}</Typography>
+                  <Typography variant="body2">฿{parseFloat(`${product.quantity}`) * parseFloat(`${product.price}`)}</Typography>
                 </ListItem>
               ))
             }

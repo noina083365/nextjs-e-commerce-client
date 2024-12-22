@@ -28,7 +28,6 @@ export default function AddressForm({ onFormSubmit }: any) {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    console.log('=== address in child ===');
     onFormSubmit(form); // Send data to parent
   };
 

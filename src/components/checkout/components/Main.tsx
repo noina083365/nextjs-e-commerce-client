@@ -100,11 +100,9 @@ export default function MainCheckout({ userId, source, productId }: any, props: 
           shipment: {
             address: formData,
             ship_price: shipPrice
-          }
+          },
+          checkout_source: source
         }
-        // if (source === 'cart') {
-        //   // send cartId in request
-        // }
       }
       try {
         const result: any = await store.dispatch(createOrder(order));
